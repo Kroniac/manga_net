@@ -13,3 +13,5 @@ class Mangas(models.Model):
     last_updated = models.IntegerField(null=True)
     image = models.TextField(null=True)
 
+    class Meta:
+        ordering: ["-last_updated"]
