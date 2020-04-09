@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_apscheduler",
     "mangas.apps.MangasConfig",
+    "django_filters"
 ]
 
 APSCHEDULER_DATETIME_FORMAT =  "N j, Y, f:s a"  # Default
