@@ -54,12 +54,13 @@ const options = [
 
 const Search = (props) => (
   <AutoComplete
-    dropdownClassName = "certain-category-search-dropdown"
-    dropdownMatchSelectWidth = {500}
+    dropdownMatchSelectWidth = {252}
     style = {props.frameStyles}
-    options = {options}
+    onChange = {props.onChange}
+    defaultOpen = {false}
+    options = {props.options}
   >
-    <Input.Search size = "large" placeholder = "input here" />
+    <Input.Search style = {{ paddingTop: 10, paddingBottom: 10 }} size = "large" placeholder = "input here" />
   </AutoComplete>
 );
 

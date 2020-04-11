@@ -1,21 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input, AutoComplete } from 'antd';
+import {
+  BrowserRouter, Route, Switch, Redirect, withRouter,
+} from 'react-router-dom';
+
 import 'antd/dist/antd.css';
 import './global.less';
-import Search from './antd/search'
+
+import { Screens } from '#config/import_paths.js';
+
+const Home = Screens.Home();
 
 const App = () => (
-  <div className = "mainContainer">
-    <div className = "mainSearchContainer">
-      <Search frameStyles = {{ maxWidth: 500, width: '75%' }} />
-    </div>
-  </div>
+  <Switch>
+    <Route path = "/login" component = {Home} />
+    <Redirect to = "/login" />
+  </Switch>
 );
 
 ReactDOM.render(
   <React.StrictMode>
-       <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('app'),
 );
