@@ -14,6 +14,7 @@ module.exports = {
         "object-curly-newline": ["warn"],
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "prefer-destructuring": ["warn"],
+        "react/jsx-one-expression-per-line": [0]
     },
     "env": {
         "browser": true,
