@@ -35,7 +35,9 @@ const useDataApi = (initialUrl, initialData) => {
 
 const THROTTLE_TIME = 500;
 
-export default () => {
+const sanitizeTitle = (title) => title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-{2,}/g, '-');
+
+const Home = ({ history }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
     'http://localhost:8000/mangas/mangas/',
@@ -76,6 +78,7 @@ export default () => {
   const dataSource = searchQuery.length > 1 && data.results.map((manga) => ({
     value: manga.title,
     key: manga.id,
+    data: manga,
     label: (
       <div
         key = {manga.id}
@@ -89,19 +92,26 @@ export default () => {
         </Tag>
       </div>
     ),
-
-
   }));
+
+  const _onSelectOption = (value, option) => {
+    const manga = option.data;
+    history.push(`${manga.id}-${sanitizeTitle(manga.title)}`);
+  };
 
   return (
     <div className = "mainContainer">
       <div className = "mainSearchContainer">
         <Search
           frameStyles = {{ maxWidth: 500, width: '75%' }}
+          inputStyles = {{ paddingTop: 10, paddingBottom: 10 }}
           onChange = {_onChangeText}
           options = {dataSource}
+          onSelect = {_onSelectOption}
         />
       </div>
     </div>
   );
 };
+
+export default Home;
