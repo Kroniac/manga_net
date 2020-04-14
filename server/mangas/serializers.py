@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mangas.models import Mangas
+from mangas.models import Mangas, MangaInfo
 
 
 class MangasSerializer(serializers.ModelSerializer):
@@ -13,5 +13,22 @@ class MangasSerializer(serializers.ModelSerializer):
             "hits",
             "status",
             "title",
+            "image",
             "last_updated",
+        )
+
+
+class MangaInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MangaInfo
+        fields = (
+            "id",
+            "alias",
+            "created",
+            "description",
+            "image",
+            "imageURL",
+            "last_chapter_date",
+            "released",
+            "startsWith",
         )
