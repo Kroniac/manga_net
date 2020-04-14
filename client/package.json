@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "parcel --port=3001 src/index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build src/index.html --out-dir public --no-source-maps"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,7 @@
     "axios": "^0.19.2",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
+    "react-autocomplete": "^1.8.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2"
   },

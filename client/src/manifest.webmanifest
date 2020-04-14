@@ -1,17 +1,6 @@
 {
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.google.android.apps.youtube.music",
-      "id": "com.google.android.apps.youtube.music"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://itunes.apple.com/app/apple-store/id1017492454?mt=8&pt=9008"
-    }
-  ],
-  "name": "YouTube Music",
-  "short_name": "YT Music",
+  "name": "Manga Net",
+  "short_name": "Manga N",
   "prefer_related_applications": false,
   "background_color": "#000000",
   "icons": [
@@ -48,5 +37,5 @@
   ],
   "theme_color": "#131313",
   "display": "standalone",
-  "start_url": "/?source=pwa"
+  "start_url": "/"
 }

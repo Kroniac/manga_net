@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Input, AutoComplete } from 'antd';
 import {
   BrowserRouter, Route, Switch, Redirect, withRouter,
 } from 'react-router-dom';
@@ -16,7 +15,7 @@ const Manga = Screens.Manga();
 const App = () => (
   <Switch>
     <Route
-      path = "/:mangaId([a-z0-9]{24})-:mangaName([a-z-]+)"
+      path = "/:mangaId([a-z0-9]{24})-:mangaName([a-z0-9-]+)"
       component = {Manga}
     />
     <Route path = "/" component = {Home} />
@@ -25,14 +24,12 @@ const App = () => (
 );
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('app'),
 );
 
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.register('service-worker.js');
-// }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
