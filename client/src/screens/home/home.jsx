@@ -20,8 +20,7 @@ const THROTTLE_TIME = 500;
 
 const sanitizeTitle = (title) => title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-{2,}/g, '-');
 
-const Home = () => {
-  const [selectedManga, setSelectedManga] = useState('');
+const Home = ({ match, history }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const { isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
@@ -69,6 +68,7 @@ const Home = () => {
       <div
         key = {manga.id}
         className = "home-search-option"
+        to = {`${manga.id}-${sanitizeTitle(manga.title)}`}
       >
         <Tooltip placement = "topLeft" mouseEnterDelay = {0.5} title = {manga.title}>
           <div className = "home-search-option-title">{manga.title}</div>
@@ -88,13 +88,12 @@ const Home = () => {
 
   const _onSelectOption = (value, option) => {
     const manga = option.data;
-
-    setSelectedManga(manga);
+    history.push(`${manga.id}-${sanitizeTitle(manga.title)}`);
   };
 
   return (
     <div className = "mainContainer">
-      <div className = {`mainSearchContainer ${selectedManga ? 'selected' : ''}`}>
+      <div className = {`mainSearchContainer ${match?.params?.mangaId ? 'selected' : ''}`}>
         <Search
           frameStyles = {{ maxWidth: 500, width: '75%' }}
           inputStyles = {{ paddingTop: 10, paddingBottom: 10 }}
@@ -104,9 +103,9 @@ const Home = () => {
           size = "large"
         />
         {
-        selectedManga ? (
+        match?.params?.mangaId ? (
           <MangaDetails
-            manga = {selectedManga}
+            mangaId = {match?.params?.mangaId}
           />
         ) : null
       }
@@ -115,34 +114,34 @@ const Home = () => {
   );
 };
 
-const MangaDetails = (props) => {
+const MangaDetails = ({ mangaId }) => {
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
-    `http://localhost:8000/mangas/manga_info/${props.manga.id}/`,
-    {},
+    `http://localhost:8000/mangas/manga_info/${mangaId}/`,
+    null,
     false,
   );
 
   useEffect(() => {
-    doFetch(`http://localhost:8000/mangas/manga_info/${props.manga.id}/`);
-  }, [props.manga.id]);
+    doFetch(`http://localhost:8000/mangas/manga_info/${mangaId}/`);
+  }, [mangaId]);
 
   const _onChapterSelect = () => {
     const { manga, history } = props;
     console.log(history);
-    // history.push(`${manga.id}-${sanitizeTitle(manga.title)}`);
+    // history.push(`${mangaId}-${sanitizeTitle(manga.title)}`);
   };
-
 
   return (
     <div className = "manga-details-wrapper">
-      {isLoading && data ? <div className = "manga-details-spinner"><Spin size = "large" /></div> : (
+      {isLoading || !data ? <div className = "manga-details-spinner"><Spin size = "large" /></div> : (
 
         <>
           <Card
             className = "manga-details-card-wrapper"
-            cover = {<img style = {{ width: 100, objectFit: 'contain' }} referrerPolicy = "no-referrer" alt = "example" src = {`https://cdn.mangaeden.com/mangasimg/${props.manga.image}`} />}
+            bodyStyle = {{ padding: '7px 15px', textAlign: 'justify' }}
+            cover = {<img style = {{ width: 100, objectFit: 'contain' }} referrerPolicy = "no-referrer" alt = "example" src = {`https://cdn.mangaeden.com/mangasimg/${data.image}`} />}
           >
-            <Meta title = {data.title} description = {data.description} />
+            <div>{data.description}</div>
           </Card>
           <List
             size = "small"
@@ -155,8 +154,8 @@ const MangaDetails = (props) => {
             footer = {<div>Footer</div>}
             bordered
             style = {{ margin: '10px 0' }}
-            dataSource = {data && data.chapters}
-            renderItem = {(item) => <List.Item><Link to = {`${props.manga.id}-${sanitizeTitle(props.manga.title)}`}>{item.title}</Link></List.Item>}
+            dataSource = {data && data.chapters ? data.chapters : []}
+            renderItem = {(item) => <List.Item><Link to = {`${mangaId}-${sanitizeTitle(data.title)}`}>{item.title}</Link></List.Item>}
           />
         </>
       )}

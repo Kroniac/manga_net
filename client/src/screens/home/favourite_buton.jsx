@@ -9,11 +9,13 @@ export const FavourteButton = ({
     ? StarFilled : StarOutlined;
 
   return (
-    <IconComponent onClick = {(e) => {
-      e.stopPropagation();
-      if (isMangaFavourited(manga.id)) unfavouriteManga(manga.id);
-      else favouriteManga(manga.id);
-    }}
+    <IconComponent
+      style = {{ color: isMangaFavourited ? 'orange' : 'inherit' }}
+      onClick = {(e) => {
+        e.stopPropagation();
+        if (isMangaFavourited(manga.id)) unfavouriteManga(manga.id);
+        else favouriteManga(manga.id);
+      }}
     />
   );
 };
