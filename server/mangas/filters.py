@@ -6,5 +6,6 @@ class MangasFilter(filters.FilterSet):
     class Meta:
         model = Mangas
         fields = {
+            "id": ["in"],
             "title": ["icontains", "iexact"],
         }
