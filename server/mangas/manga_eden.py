@@ -16,7 +16,7 @@ def data_fetcher(url):
 def transform_chapters(chapters):
     return list(
         map(
-            lambda x: {"id": x[3], "last_updated": x[1], "index": x[0], "title": x[2],},
+            lambda x: {"id": x[3], "added_on": x[1], "index": x[0], "title": x[2],},
             chapters,
         )
     )
@@ -26,6 +26,18 @@ def transform_manga_info(info):
     info["chapters"] = transform_chapters(info["chapters"])
 
     return info
+
+
+def transform_chapter_images(chapter_images):
+    return list(
+        map(
+            lambda x: {
+                "id": x[0],
+                "image": {"url": x[1], "width": x[2], "height": x[3],},
+            },
+            chapter_images,
+        )
+    )
 
 
 def fetch_manga_data():
@@ -46,4 +58,6 @@ def fetch_manga_info(manga_id):
 def fetch_manga_chapter_images(chapter_id):
     url = base_url + "chapter/" + chapter_id + "/"
     data = data_fetcher(url)
-    return data
+    if data is not None:
+        return transform_chapter_images(data["images"])
+    return None

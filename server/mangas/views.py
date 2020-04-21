@@ -10,7 +10,7 @@ from mangas.filters import MangasFilter
 from mangas.models import Mangas, MangaInfo
 
 from manganet.pagination import StandardResultsSetPagination
-from mangas.manga_eden import fetch_manga_info
+from mangas.manga_eden import fetch_manga_info, fetch_manga_chapter_images
 
 
 class MangasViewSet(viewsets.ModelViewSet):
@@ -41,6 +41,14 @@ class MangaInfoView(APIView):
 
     def get(self, request, pk):
         data = fetch_manga_info(pk)
+        if data is None:
+            raise Http404
+        return Response(data)
+
+
+class MangaChapterView(APIView):
+    def get(self, request, pk):
+        data = fetch_manga_chapter_images(pk)
         if data is None:
             raise Http404
         return Response(data)
