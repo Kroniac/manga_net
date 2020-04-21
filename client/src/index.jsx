@@ -5,19 +5,21 @@ import {
 } from 'react-router-dom';
 
 import 'antd/dist/antd.css';
-import './global.less';
 
 import { Screens } from '#config/import_paths.js';
 
 const Home = Screens.Home();
+const MangaChapter = Screens.MangaChapter();
 
 const App = () => (
   <Switch>
     <Route
       path = "/:mangaId([a-z0-9]{24})-:mangaName([a-z0-9-]+)"
+      exact
       component = {Home}
     />
-    <Route path = "/" component = {Home} />
+    <Route exact path = "/" component = {Home} />
+    <Route path = "/chapter/:chapterId([a-z0-9]{24})-:mangaName([a-z0-9-]+)" component = {MangaChapter} />
     <Redirect to = "/" />
   </Switch>
 );

@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
-import {
-  Tag, Tooltip, Spin, Card, List, Input,
-} from 'antd';
+import { Tag, Tooltip } from 'antd';
+
+import { MangaDetails } from './manga_details';
+import { FavourteButton } from './favourite_buton';
 
 import Search from '../../antd/search';
 
-import { CustomHooks } from '#config/import_paths';
-import { FavourteButton } from './favourite_buton';
+import { ReturnMangaStatusInfo } from './utils';
 
-const { Meta } = Card;
+import { CustomHooks, Libs } from '#config/import_paths';
+
+const { sanitizeTitle } = Libs.Utils();
 
 
 const { useDataApi } = CustomHooks.useDataApi();
 const { useFavouritedManga } = CustomHooks.useFavourtiedManga();
 
 const THROTTLE_TIME = 500;
-
-const sanitizeTitle = (title) => title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-{2,}/g, '-');
 
 const Home = ({ match, history }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,25 +38,9 @@ const Home = ({ match, history }) => {
     setSearchQuery(searchText);
   }, THROTTLE_TIME), [setSearchQuery]);
 
-  const _returnStatusInfo = (status) => {
-    switch (status) {
-      case 0: return {
-        title: 'Suspended',
-        color: '',
-      };
-      case 1: return {
-        title: 'Ongoing',
-        color: 'blue',
-      };
-      case 2: return {
-        title: 'Completed',
-        color: 'green',
-      };
-      default: return {
-        title: 'Unknown',
-        color: '',
-      };
-    }
+  const _onFavouriteButtonClick = (mangaId) => {
+    if (isMangaFavourited(mangaId)) unfavouriteManga(mangaId);
+    else favouriteManga(mangaId);
   };
 
   const dataSource = searchQuery.length > 1 && data.results.map((manga) => ({
@@ -67,20 +50,19 @@ const Home = ({ match, history }) => {
     label: (
       <div
         key = {manga.id}
-        className = "home-search-option"
+        className = "homeSearchOption"
         to = {`${manga.id}-${sanitizeTitle(manga.title)}`}
       >
         <Tooltip placement = "topLeft" mouseEnterDelay = {0.5} title = {manga.title}>
-          <div className = "home-search-option-title">{manga.title}</div>
+          <div className = "homeSearchOptionTitle">{manga.title}</div>
         </Tooltip>
-        <Tag className = "home-search-option-status" color = {_returnStatusInfo(manga.status).color}>
-          {_returnStatusInfo(manga.status).title}
+        <Tag className = "homeSearchOptionStatus" color = {ReturnMangaStatusInfo(manga.status).color}>
+          {ReturnMangaStatusInfo(manga.status).title}
         </Tag>
         <FavourteButton
-          manga = {manga}
+          mangaId = {manga.id}
           isMangaFavourited = {isMangaFavourited}
-          favouriteManga = {favouriteManga}
-          unfavouriteManga = {unfavouriteManga}
+          onClick = {_onFavouriteButtonClick}
         />
       </div>
     ),
@@ -91,76 +73,31 @@ const Home = ({ match, history }) => {
     history.push(`${manga.id}-${sanitizeTitle(manga.title)}`);
   };
 
+
   return (
     <div className = "mainContainer">
-      <div className = {`mainSearchContainer ${match?.params?.mangaId ? 'selected' : ''}`}>
+      <div className = {match?.params?.mangaId ? ['mainSearchContainer', 'selected'].join(' ') : 'mainSearchContainer'}>
         <Search
           frameStyles = {{ maxWidth: 500, width: '75%' }}
           inputStyles = {{ paddingTop: 10, paddingBottom: 10 }}
           onChange = {_onChangeText}
           options = {dataSource}
           onSelect = {_onSelectOption}
+          placeholder = "Search for manga"
           size = "large"
         />
         {
         match?.params?.mangaId ? (
           <MangaDetails
             mangaId = {match?.params?.mangaId}
+            history = {history}
+            isMangaFavourited = {isMangaFavourited}
+            onFavouriteButtonClick = {_onFavouriteButtonClick}
           />
         ) : null
       }
       </div>
     </div>
-  );
-};
-
-const MangaDetails = ({ mangaId }) => {
-  const [{ data, isLoading, isError }, doFetch] = useDataApi(
-    `http://localhost:8000/mangas/manga_info/${mangaId}/`,
-    null,
-    false,
-  );
-
-  useEffect(() => {
-    doFetch(`http://localhost:8000/mangas/manga_info/${mangaId}/`);
-  }, [mangaId]);
-
-  const _onChapterSelect = () => {
-    const { manga, history } = props;
-    console.log(history);
-    // history.push(`${mangaId}-${sanitizeTitle(manga.title)}`);
-  };
-
-  return (
-    <div className = "manga-details-wrapper">
-      {isLoading || !data ? <div className = "manga-details-spinner"><Spin size = "large" /></div> : (
-
-        <>
-          <Card
-            className = "manga-details-card-wrapper"
-            bodyStyle = {{ padding: '7px 15px', textAlign: 'justify' }}
-            cover = {<img style = {{ width: 100, objectFit: 'contain' }} referrerPolicy = "no-referrer" alt = "example" src = {`https://cdn.mangaeden.com/mangasimg/${data.image}`} />}
-          >
-            <div>{data.description}</div>
-          </Card>
-          <List
-            size = "small"
-            header = {(
-              <Input
-                placeholder = "input search text"
-                onChange = {(e) => console.log(e.currentTarget.value)}
-              />
-          )}
-            footer = {<div>Footer</div>}
-            bordered
-            style = {{ margin: '10px 0' }}
-            dataSource = {data && data.chapters ? data.chapters : []}
-            renderItem = {(item) => <List.Item><Link to = {`${mangaId}-${sanitizeTitle(data.title)}`}>{item.title}</Link></List.Item>}
-          />
-        </>
-      )}
-    </div>
-
   );
 };
 

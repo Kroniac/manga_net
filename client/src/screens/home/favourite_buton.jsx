@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StarOutlined, StarFilled } from '@ant-design/icons';
 
 
-export const FavourteButton = ({
-  manga, isMangaFavourited, unfavouriteManga, favouriteManga,
-}) => {
-  const IconComponent = isMangaFavourited(manga.id)
+export const FavourteButton = React.forwardRef(({
+  mangaId, isMangaFavourited, onClick,
+}, ref) => {
+  const [iconClassName, setIconClassName] = useState('');
+  const didMountRef = useRef(false);
+  const isMangaFavourite = isMangaFavourited(mangaId);
+
+  useEffect(() => {
+    if (didMountRef.current) {
+      if (isMangaFavourite) setIconClassName('favourited');
+      else setIconClassName('');
+    } else didMountRef.current = true;
+  }, [isMangaFavourite]);
+
+  const _onClick = (e) => {
+    e.stopPropagation();
+    onClick(mangaId);
+  };
+
+  const IconComponent = isMangaFavourite
     ? StarFilled : StarOutlined;
 
   return (
-    <IconComponent
-      style = {{ color: isMangaFavourited ? 'orange' : 'inherit' }}
-      onClick = {(e) => {
-        e.stopPropagation();
-        if (isMangaFavourited(manga.id)) unfavouriteManga(manga.id);
-        else favouriteManga(manga.id);
-      }}
-    />
+    <div className = "homeFavouriteButtonWrapper">
+      <IconComponent
+        ref = {ref}
+        style = {{ fontSize: 16, padding: 3, color: isMangaFavourite ? '#FFD700' : 'inherit' }}
+        onClick = {_onClick}
+        className = {iconClassName}
+      />
+    </div>
   );
-};
+});
