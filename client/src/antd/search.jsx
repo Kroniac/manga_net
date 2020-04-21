@@ -10,7 +10,7 @@ const Search = (props) => (
     options = {props.options}
     onSelect = {props.onSelect}
   >
-    <Input.Search style = {props.inputStyles} size = "large" placeholder = "input here" />
+    <Input.Search style = {props.inputStyles} size = "large" placeholder = {props.placeholder} />
   </AutoComplete>
 );
 
