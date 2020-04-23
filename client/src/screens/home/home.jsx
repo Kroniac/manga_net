@@ -1,8 +1,8 @@
-import './home.less';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Tag, Tooltip } from 'antd';
 import { func, shape, string } from 'prop-types';
 import _ from 'lodash';
+import './home.less';
 
 
 import { FavourteButton } from './favourite_buton';
@@ -16,6 +16,7 @@ const { SanitiazeTitle } = Libs.Utils();
 
 const { useDataApi } = CustomHooks.useDataApi();
 const { useFavouritedManga } = CustomHooks.useFavourtiedManga();
+
 
 const THROTTLE_TIME = 500;
 
@@ -76,7 +77,12 @@ const Home = ({ match, history }) => {
 
   return (
     <div className = "mainContainer">
-      <div className = {match?.params?.mangaId ? ['mainSearchContainer', 'selected'].join(' ') : 'mainSearchContainer'}>
+      <div
+        className = {
+          match?.params?.mangaId
+            ? ['mainSearchContainer', 'selected'].join(' ') : 'mainSearchContainer'
+        }
+      >
         <Search
           frameStyles = {{ maxWidth: 500, width: '75%' }}
           inputStyles = {{ paddingTop: 10, paddingBottom: 10 }}

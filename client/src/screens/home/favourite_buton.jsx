@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StarOutlined, StarFilled } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { StarFilled, StarOutlined } from '@ant-design/icons';
+import { func, string } from 'prop-types';
 
 
 export const FavourteButton = React.forwardRef(({
@@ -35,3 +36,9 @@ export const FavourteButton = React.forwardRef(({
     </div>
   );
 });
+
+FavourteButton.propTypes = {
+  mangaId: string.isRequired,
+  isMangaFavourited: func.isRequired,
+  onClick: func.isRequired,
+};

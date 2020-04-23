@@ -1,9 +1,10 @@
 
+import React, { useEffect, useState } from 'react';
 import {
   Button, Divider, Input, List, Spin, Tabs, Tag, Typography,
 } from 'antd';
 import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
-import React, { useEffect, useState } from 'react';
+import { func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
 
@@ -46,7 +47,8 @@ export const MangaDetails = React.memo(({
       const updatedChapters = data.chapters.map((chapter, index) => ({
         ...chapter,
         chapterIndex: String(data.chapters.length - index).padStart(String(data.chapters.length).length, '0'),
-        displayTitle: `Chapter ${chapter.index} ${chapter.title && chapter.title !== String(chapter.index) ? ` - ${chapter.title}` : ''}`,
+        displayTitle: `Chapter ${chapter.index} ${chapter.title && chapter.title !== String(chapter.index)
+          ? ` - ${chapter.title}` : ''}`,
         displayTime: ReturnFormattedDateFromUtcSecs(chapter.added_on),
       }));
       chaptersOriginalCopy = updatedChapters;
@@ -80,14 +82,24 @@ export const MangaDetails = React.memo(({
         <>
           <div className = "mangaDetailsCardWrapper">
             <div className = "mangaDetailsCoverWrapper">
-              <img referrerPolicy = "no-referrer" alt = "example" src = {`https://cdn.mangaeden.com/mangasimg/${data.image}`} />
+              <img
+                referrerPolicy = "no-referrer"
+                alt = "example"
+                src = {`https://cdn.mangaeden.com/mangasimg/${data.image}`}
+              />
             </div>
             <div className = "mangaDetailsCardContentWrapper">
               <div className = "mangaDetailsCardContentTagWrapper">
                 {data.categories.map((category) => (
                   <Tag key = {category} style = {{ margin: '2px' }}>{category}</Tag>
                 ))}
-                <Tag key = "status" color = {ReturnMangaStatusInfo(data.status).color} style = {{ margin: '2px' }}>{ReturnMangaStatusInfo(data.status).title}</Tag>
+                <Tag
+                  key = "status"
+                  color = {ReturnMangaStatusInfo(data.status).color}
+                  style = {{ margin: '2px' }}
+                >
+                  {ReturnMangaStatusInfo(data.status).title}
+                </Tag>
               </div>
               <div className = "mangaDetailsCardContentInfo">
                 <Typography.Title level = {3}>{data.title}</Typography.Title>
@@ -98,7 +110,12 @@ export const MangaDetails = React.memo(({
                   <Button onClick = {_onReadEpisodeClick} type = "primary" shape = "round">
                     Read Chapter 1
                   </Button>
-                  <Button onClick = {() => onFavouriteButtonClick(data.id)} type = "primary" shape = "round" style = {{ marginLeft: 4 }}>
+                  <Button
+                    onClick = {() => onFavouriteButtonClick(data.id)}
+                    type = "primary"
+                    shape = "round"
+                    style = {{ marginLeft: 4 }}
+                  >
                     <FavourteButton
                       mangaId = {data.id}
                       isMangaFavourited = {isMangaFavourited}
@@ -133,7 +150,7 @@ export const MangaDetails = React.memo(({
                   column: 2, md: 2, sm: 1, xs: 1,
                 }}
                 dataSource = {chapters}
-                renderItem = {(item, index) => (
+                renderItem = {(item) => (
                   <List.Item key = {item.index} className = "mangaDetailsChapterListItemWrapper">
                     <Link style = {{ width: '100%' }} to = {_returnChapterPath(item.id, data.title)}>
                       <List.Item.Meta
@@ -150,7 +167,9 @@ export const MangaDetails = React.memo(({
                           </div>
                         )}
                         title = {item.displayTitle}
-                        description = {<Typography.Text type = "secondary">{item.displayTime}</Typography.Text>}
+                        description = {
+                          <Typography.Text type = "secondary">{item.displayTime}</Typography.Text>
+                        }
                       />
                     </Link>
                     <Divider className = "mangaDetailsChapterListItemDivider" />
@@ -176,3 +195,12 @@ export const MangaDetails = React.memo(({
 
   );
 }, shouldStopMangaDetailsUpdate);
+
+MangaDetails.propTypes = {
+  mangaId: string.isRequired,
+  isMangaFavourited: func.isRequired,
+  onFavouriteButtonClick: func.isRequired,
+  history: shape({
+    push: func.isRequired,
+  }).isRequired,
+};

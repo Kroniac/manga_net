@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { shape, string } from 'prop-types';
 import { Spin } from 'antd';
-import './manga_chapter.less'
+import './manga_chapter.less';
 
 import { Components, CustomHooks, Urls } from '#config/import_paths';
 
@@ -10,6 +10,7 @@ const { LazyLoadImage } = Components.LazyLoadImage();
 const { useDataApi } = CustomHooks.useDataApi();
 
 const { ApiUrls } = Urls.ApiUrls();
+
 
 const MangaChapter = ({ match }) => {
   const [{ data, isLoading, isError }, doFetch] = useDataApi(

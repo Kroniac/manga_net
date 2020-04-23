@@ -17,7 +17,7 @@ module.exports = {
         "react/jsx-one-expression-per-line": [0],
         "sort-imports": ["error", {
             "ignoreCase": false,
-            "ignoreDeclarationSort": false,
+            "ignoreDeclarationSort": true,
             "ignoreMemberSort": false,
             "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
         }],
