@@ -15,6 +15,16 @@ module.exports = {
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "prefer-destructuring": ["warn"],
         "react/jsx-one-expression-per-line": [0],
+        "sort-imports": ["error", {
+            "ignoreCase": false,
+            "ignoreDeclarationSort": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+        }],
+        "import/extensions": ["error", "ignorePackages", {
+            "js": "never",
+            "jsx": "never",
+          }]
     },
     "env": {
         "browser": true,
