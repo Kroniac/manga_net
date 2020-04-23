@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
+import { shape, string } from 'prop-types';
 import { Spin } from 'antd';
+import './manga_chapter.less'
 
-import './manga_chapter.less';
-import { CustomHooks, Urls, Components } from '#config/import_paths';
+import { Components, CustomHooks, Urls } from '#config/import_paths';
 
 const { LazyLoadImage } = Components.LazyLoadImage();
 
@@ -29,8 +30,8 @@ const MangaChapter = ({ match }) => {
       {
         [...data]
           .reverse()
-          .map((item, index) => (
-            <div key = {index}>
+          .map((item) => (
+            <div key = {item.id}>
               <LazyLoadImage
                 placeholderHeight = {item.image.height}
                 rootRef = {wrapperRef}
@@ -42,6 +43,14 @@ const MangaChapter = ({ match }) => {
   }
     </div>
   );
+};
+
+MangaChapter.propTypes = {
+  match: shape({
+    params: shape({
+      chapterId: string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default MangaChapter;

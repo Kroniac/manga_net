@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { ReadOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import {
-  Spin, Typography, Tabs, List, Input, Tag, Button, Divider,
-} from 'antd';
 
+import {
+  Button, Divider, Input, List, Spin, Tabs, Tag, Typography,
+} from 'antd';
+import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
+
 import { CustomHooks, Libs } from '#config/import_paths';
 
-import './home.less';
-import { ReturnMangaStatusInfo } from './utils';
+
 import { FavourteButton } from './favourite_buton';
+import { ReturnMangaStatusInfo } from './utils';
 
 const { TabPane } = Tabs;
 
-const { sanitizeTitle, returnFormattedDateFromUtcSecs } = Libs.Utils();
+const { SanitiazeTitle, ReturnFormattedDateFromUtcSecs } = Libs.Utils();
 
 const { useDataApi } = CustomHooks.useDataApi();
 
 
 const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
   if (prevProps.mangaId !== nextProps.mangaId) return false;
-  if (prevProps.isMangaFavourited(prevProps.mangaId) !== nextProps.isMangaFavourited(nextProps.mangaId)) return false;
+  if (prevProps.isMangaFavourited(prevProps.mangaId) !== nextProps.isMangaFavourited(nextProps.mangaId)) {
+    return false;
+  }
 
   return true;
 };
@@ -44,7 +47,7 @@ export const MangaDetails = React.memo(({
         ...chapter,
         chapterIndex: String(data.chapters.length - index).padStart(String(data.chapters.length).length, '0'),
         displayTitle: `Chapter ${chapter.index} ${chapter.title && chapter.title !== String(chapter.index) ? ` - ${chapter.title}` : ''}`,
-        displayTime: returnFormattedDateFromUtcSecs(chapter.added_on),
+        displayTime: ReturnFormattedDateFromUtcSecs(chapter.added_on),
       }));
       chaptersOriginalCopy = updatedChapters;
       setChapters(updatedChapters);
@@ -55,7 +58,7 @@ export const MangaDetails = React.memo(({
     doFetch(`http://localhost:8000/mangas/manga_info/${mangaId}/`);
   }, [mangaId]);
 
-  const _returnChapterPath = (chapterId, mangaTitle) => `chapter/${chapterId}-${sanitizeTitle(mangaTitle)}`;
+  const _returnChapterPath = (chapterId, mangaTitle) => `chapter/${chapterId}-${SanitiazeTitle(mangaTitle)}`;
 
   const _onReadEpisodeClick = () => {
     const path = _returnChapterPath(data.chapters[data.chapters.length - 1].id, data.title);

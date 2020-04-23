@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import _ from 'lodash';
+import './home.less';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Tag, Tooltip } from 'antd';
+import { func, shape, string } from 'prop-types';
+import _ from 'lodash';
 
-import { MangaDetails } from './manga_details';
+
 import { FavourteButton } from './favourite_buton';
-
-import Search from '../../antd/search';
-
+import { MangaDetails } from './manga_details';
 import { ReturnMangaStatusInfo } from './utils';
+import Search from '../../antd/search';
 
 import { CustomHooks, Libs } from '#config/import_paths';
 
-const { sanitizeTitle } = Libs.Utils();
-
+const { SanitiazeTitle } = Libs.Utils();
 
 const { useDataApi } = CustomHooks.useDataApi();
 const { useFavouritedManga } = CustomHooks.useFavourtiedManga();
@@ -51,7 +51,7 @@ const Home = ({ match, history }) => {
       <div
         key = {manga.id}
         className = "homeSearchOption"
-        to = {`${manga.id}-${sanitizeTitle(manga.title)}`}
+        to = {`${manga.id}-${SanitiazeTitle(manga.title)}`}
       >
         <Tooltip placement = "topLeft" mouseEnterDelay = {0.5} title = {manga.title}>
           <div className = "homeSearchOptionTitle">{manga.title}</div>
@@ -70,7 +70,7 @@ const Home = ({ match, history }) => {
 
   const _onSelectOption = (value, option) => {
     const manga = option.data;
-    history.push(`${manga.id}-${sanitizeTitle(manga.title)}`);
+    history.push(`${manga.id}-${SanitiazeTitle(manga.title)}`);
   };
 
 
@@ -99,6 +99,17 @@ const Home = ({ match, history }) => {
       </div>
     </div>
   );
+};
+
+Home.propTypes = {
+  match: shape({
+    params: shape({
+      mangaId: string,
+    }).isRequired,
+  }).isRequired,
+  history: shape({
+    push: func.isRequired,
+  }).isRequired,
 };
 
 export default Home;

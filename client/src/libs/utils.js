@@ -1,6 +1,6 @@
-export const sanitizeTitle = (title) => title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-{2,}/g, '-');
+export const SanitiazeTitle = (title) => title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-{2,}/g, '-');
 
-export const returnFormattedDateFromUtcSecs = (utcSecs) => {
+export const ReturnFormattedDateFromUtcSecs = (utcSecs) => {
   const currentDate = new Date(0);
   currentDate.setUTCSeconds(utcSecs);
 
