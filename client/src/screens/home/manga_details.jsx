@@ -108,7 +108,7 @@ export const MangaDetails = React.memo(({
               <div>
                 <div className = "flexContainer">
                   <Button onClick = {_onReadEpisodeClick} type = "primary" shape = "round">
-                    Read Chapter 1
+                    {`Read Chapter ${chaptersOriginalCopy[chaptersOriginalCopy.length - 1].index}`}
                   </Button>
                   <Button
                     onClick = {() => onFavouriteButtonClick(data.id)}
