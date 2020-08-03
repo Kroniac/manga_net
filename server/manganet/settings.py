@@ -108,7 +108,7 @@ WSGI_APPLICATION = "manganet.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "manganet",
+        "NAME": "mangasnet",
         "USER": "postgres",
         "PASSWORD": "qwerty",
         "host": "localhost",

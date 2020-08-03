@@ -5,16 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('mangas', '0008_auto_20200411_0254'),
-    ]
-
     operations = [
         migrations.CreateModel(
-            name='MangaInfo',
+            name="MangaInfo",
             fields=[
-                ('id', models.CharField(max_length=24, primary_key=True, serialize=False)),
-                ('alias', models.TextField(max_length=30)),
+                (
+                    "id",
+                    models.CharField(max_length=24, primary_key=True, serialize=False),
+                ),
+                ("alias", models.TextField(max_length=30)),
             ],
         ),
     ]

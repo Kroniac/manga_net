@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
 from rest_framework.views import APIView
-from django.http import Http404
+from django.http import Http404, HttpResponse, FileResponse
 from rest_framework.response import Response
 from mangas.serializers import MangasSerializer, MangaInfoSerializer
 
@@ -10,7 +10,11 @@ from mangas.filters import MangasFilter
 from mangas.models import Mangas, MangaInfo
 
 from manganet.pagination import StandardResultsSetPagination
-from mangas.manga_eden import fetch_manga_info, fetch_manga_chapter_images
+from mangas.manga_fetcher import (
+    get_manga_chapter_image,
+    fetch_manga_info,
+    fetch_manga_chapter,
+)
 
 
 class MangasViewSet(viewsets.ModelViewSet):
@@ -46,9 +50,22 @@ class MangaInfoView(APIView):
         return Response(data)
 
 
+# class MangaChaptersView(APIView)
+
+
 class MangaChapterView(APIView):
     def get(self, request, pk):
-        data = fetch_manga_chapter_images(pk)
+        data = fetch_manga_chapter(pk)
         if data is None:
             raise Http404
+        return Response(data)
+
+
+class MangaChapterPageView(APIView):
+    def post(self, request, *args):
+        link = request.data["link"]
+        data = get_manga_chapter_image(link)
+        if data is None:
+            raise Http404
+
         return Response(data)

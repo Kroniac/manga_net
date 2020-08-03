@@ -12,5 +12,6 @@ router.register(r"mangas", views.MangasViewSet, basename="mangas")
 urlpatterns = [
     url(r"^", include(router.urls)),
     path("manga_info/<str:pk>/", views.MangaInfoView.as_view()),
-    path("chapter/<str:pk>/", views.MangaChapterView.as_view()),
+    path("chapters/<str:pk>/", views.MangaChapterView.as_view()),
+    path("chapter_page/", views.MangaChapterPageView.as_view()),
 ]

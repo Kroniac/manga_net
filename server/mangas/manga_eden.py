@@ -1,6 +1,6 @@
 import requests
 
-base_url = "https://www.mangaeden.com/api/"
+base_url = "https://www2.mangaeden.com/api/"
 
 
 def data_fetcher(url):
@@ -55,7 +55,7 @@ def fetch_manga_info(manga_id):
     return None
 
 
-def fetch_manga_chapter_images(chapter_id):
+def fetch_manga_chapter(chapter_id):
     url = base_url + "chapter/" + chapter_id + "/"
     data = data_fetcher(url)
     if data is not None:

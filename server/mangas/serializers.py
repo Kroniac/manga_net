@@ -8,13 +8,13 @@ class MangasSerializer(serializers.ModelSerializer):
         model = Mangas
         fields = (
             "id",
-            "alias",
-            "categories",
             "hits",
-            "status",
             "title",
-            "image",
+            "link",
+            "ratings",
             "last_updated",
+            "status",
+            "image",
         )
 
 
@@ -24,11 +24,9 @@ class MangaInfoSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "alias",
-            "created",
+            "categories",
             "description",
             "image",
             "imageURL",
             "last_chapter_date",
-            "released",
-            "startsWith",
         )
