@@ -1,14 +1,14 @@
 export const ReturnMangaStatusInfo = (status) => {
   switch (status) {
-    case 0: return {
+    case 'suspended': return {
       title: 'Suspended',
       color: '',
     };
-    case 1: return {
+    case 'ongoing': return {
       title: 'Ongoing',
       color: 'blue',
     };
-    case 2: return {
+    case 'completed': return {
       title: 'Completed',
       color: 'green',
     };

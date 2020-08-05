@@ -1,15 +1,13 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   Button, Divider, Input, List, Spin, Tabs, Tag, Typography,
 } from 'antd';
 import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
-import { func, shape, string } from 'prop-types';
+import { bool, func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
 
 import { CustomHooks, Libs } from '#config/import_paths';
-
 
 import { FavourteButton } from './favourite_buton';
 import { ReturnMangaStatusInfo } from './utils';
@@ -18,12 +16,11 @@ const { TabPane } = Tabs;
 
 const { SanitiazeTitle, ReturnFormattedDateFromUtcSecs } = Libs.Utils();
 
-const { useDataApi } = CustomHooks.useDataApi();
-
+const { useDataApi } = CustomHooks.UseDataApi();
 
 const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
   if (prevProps.mangaId !== nextProps.mangaId) return false;
-  if (prevProps.isMangaFavourited(prevProps.mangaId) !== nextProps.isMangaFavourited(nextProps.mangaId)) {
+  if (prevProps.isMangaFavourite !== nextProps.isMangaFavourite) {
     return false;
   }
 
@@ -33,7 +30,7 @@ const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
 let chaptersOriginalCopy = [];
 
 export const MangaDetails = React.memo(({
-  mangaId, isMangaFavourited, onFavouriteButtonClick, history,
+  mangaId, isMangaFavourite, onFavouriteButtonClick, history,
 }) => {
   const [chapters, setChapters] = useState([]);
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
@@ -47,9 +44,8 @@ export const MangaDetails = React.memo(({
       const updatedChapters = data.chapters.map((chapter, index) => ({
         ...chapter,
         chapterIndex: String(data.chapters.length - index).padStart(String(data.chapters.length).length, '0'),
-        displayTitle: `Chapter ${chapter.index} ${chapter.title && chapter.title !== String(chapter.index)
-          ? ` - ${chapter.title}` : ''}`,
-        displayTime: ReturnFormattedDateFromUtcSecs(chapter.added_on),
+        displayTitle: chapter.title,
+        displayTime: ReturnFormattedDateFromUtcSecs(chapter.last_updated),
       }));
       chaptersOriginalCopy = updatedChapters;
       setChapters(updatedChapters);
@@ -60,10 +56,14 @@ export const MangaDetails = React.memo(({
     doFetch(`http://localhost:8000/mangas/manga_info/${mangaId}/`);
   }, [mangaId]);
 
-  const _returnChapterPath = (chapterId, mangaTitle) => `chapter/${chapterId}-${SanitiazeTitle(mangaTitle)}`;
+  const _returnChapterPath = (chapterId, mangaTitle) => {
+    const path = `chapter/${mangaId}-${chapterId}-${SanitiazeTitle(mangaTitle)}`;
+    return path;
+  };
 
   const _onReadEpisodeClick = () => {
     const path = _returnChapterPath(data.chapters[data.chapters.length - 1].id, data.title);
+
     history.push(path);
   };
 
@@ -84,8 +84,8 @@ export const MangaDetails = React.memo(({
             <div className = "mangaDetailsCoverWrapper">
               <img
                 referrerPolicy = "no-referrer"
-                alt = "example"
-                src = {`https://cdn.mangaeden.com/mangasimg/${data.image}`}
+                alt = {data.alt}
+                src = {data.image}
               />
             </div>
             <div className = "mangaDetailsCardContentWrapper">
@@ -108,7 +108,7 @@ export const MangaDetails = React.memo(({
               <div>
                 <div className = "flexContainer">
                   <Button onClick = {_onReadEpisodeClick} type = "primary" shape = "round">
-                    {`Read Chapter ${chaptersOriginalCopy[chaptersOriginalCopy.length - 1].index}`}
+                    Read First Chapter
                   </Button>
                   <Button
                     onClick = {() => onFavouriteButtonClick(data.id)}
@@ -117,8 +117,8 @@ export const MangaDetails = React.memo(({
                     style = {{ marginLeft: 4 }}
                   >
                     <FavourteButton
-                      mangaId = {data.id}
-                      isMangaFavourited = {isMangaFavourited}
+                      manga = {data}
+                      isMangaFavourite = {isMangaFavourite}
                       onClick = {onFavouriteButtonClick}
                     />
                   </Button>
@@ -137,7 +137,7 @@ export const MangaDetails = React.memo(({
               key = "1"
             >
               <Input
-                style = {{ marginBottom: 20 }}
+                style = {{ marginBottom: 20, backgroundColor: '#383838' }}
                 placeholder = "Search for chapter"
                 onChange = {_onChapterChangeText}
               />
@@ -186,7 +186,7 @@ export const MangaDetails = React.memo(({
               )}
               key = "2"
             >
-              <Typography.Text strong>{htmlEntityEncode(data.description)}</Typography.Text>
+              <Typography.Paragraph>{htmlEntityEncode(data.description)}</Typography.Paragraph>
             </TabPane>
           </Tabs>
         </>
@@ -198,7 +198,7 @@ export const MangaDetails = React.memo(({
 
 MangaDetails.propTypes = {
   mangaId: string.isRequired,
-  isMangaFavourited: func.isRequired,
+  isMangaFavourite: bool.isRequired,
   onFavouriteButtonClick: func.isRequired,
   history: shape({
     push: func.isRequired,
