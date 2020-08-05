@@ -1,7 +1,9 @@
+/* eslint-disable global-require */
 export const Screens = {
   Home: () => require('../screens/home/home').default,
   Manga: () => require('../screens/manga').default,
   MangaChapter: () => require('../screens/manga_chapter/manga_chapter').default,
+  FavouriteMangas: () => require('../screens/favourite_mangas/favourite_mangas').default,
 };
 
 export const Libs = {
@@ -9,11 +11,10 @@ export const Libs = {
   Utils: () => require('../libs/utils'),
 };
 
-
 export const CustomHooks = {
-  useLocalStorage: () => require('../hooks/useLocalStorage'),
-  useDataApi: () => require('../hooks/useDataApi'),
-  useFavourtiedManga: () => require('../hooks/useFavouritedManga'),
+  UseLocalStorage: () => require('../hooks/useLocalStorage'),
+  UseDataApi: () => require('../hooks/useDataApi'),
+  UseFavourtiedManga: () => require('../hooks/useFavouritedManga'),
 };
 
 export const Urls = {

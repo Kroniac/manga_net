@@ -1,4 +1,5 @@
 export const ApiUrls = {
   baseUrl: 'http://localhost:8000/',
-  mangaChapter: 'mangas/chapter/{chapterId}/',
+  mangaChapter: 'mangas/chapters/{chapterId}/',
+  mangaChapterImage: 'mangas/chapter_page/',
 };

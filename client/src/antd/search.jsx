@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, AutoComplete } from 'antd';
+import { AutoComplete, Input } from 'antd';
 
 const Search = (props) => (
   <AutoComplete
