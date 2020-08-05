@@ -1,31 +1,34 @@
 import { CustomHooks } from '#config/import_paths';
 
-const { useLocalStorage } = CustomHooks.useLocalStorage();
+const { useLocalStorage } = CustomHooks.UseLocalStorage();
 
 export const useFavouritedManga = () => {
-  const [favouritedMangas, setFavouritedManga] = useLocalStorage('favouritedManga', []);
+  const [favouritedMangasById, setFavouritedManga] = useLocalStorage('favouritedMangasById', {});
 
-  const isMangaFavourited = (mangaId) => favouritedMangas.indexOf(mangaId) > -1;
+  const isMangaFavourited = (mangaId) => !!favouritedMangasById[mangaId];
 
-  const favouriteManga = (mangaId) => {
-    const isFavourited = isMangaFavourited(mangaId);
+  const favouriteManga = (manga) => {
+    const isFavourited = isMangaFavourited(manga);
 
     if (!isFavourited) {
-      const updatedFavouritedMangas = [...favouritedMangas, mangaId];
-      return setFavouritedManga(updatedFavouritedMangas);
+      return setFavouritedManga({
+        ...favouritedMangasById,
+        [manga.id]: manga,
+      });
     }
 
     return null;
   };
 
   const unfavouriteManga = (mangaId) => {
-    const updatedFavouritedMangas = favouritedMangas.filter((id) => id !== mangaId);
-    return setFavouritedManga(updatedFavouritedMangas);
+    const favouritedMangasCopy = { ...favouritedMangasById };
+    delete favouritedMangasCopy[mangaId];
+    return setFavouritedManga(favouritedMangasCopy);
   };
 
   return {
     favouriteManga,
-    favouritedMangas,
+    favouritedMangasById,
     isMangaFavourited,
     unfavouriteManga,
   };

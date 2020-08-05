@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
-import { func, string } from 'prop-types';
-
+import { bool, func, shape, string } from 'prop-types';
 
 export const FavourteButton = React.forwardRef(({
-  mangaId, isMangaFavourited, onClick,
+  manga, isMangaFavourite, onClick,
 }, ref) => {
   const [iconClassName, setIconClassName] = useState('');
   const didMountRef = useRef(false);
-  const isMangaFavourite = isMangaFavourited(mangaId);
 
   useEffect(() => {
     if (didMountRef.current) {
@@ -19,7 +17,7 @@ export const FavourteButton = React.forwardRef(({
 
   const _onClick = (e) => {
     e.stopPropagation();
-    onClick(mangaId);
+    onClick(manga);
   };
 
   const IconComponent = isMangaFavourite
@@ -38,7 +36,9 @@ export const FavourteButton = React.forwardRef(({
 });
 
 FavourteButton.propTypes = {
-  mangaId: string.isRequired,
-  isMangaFavourited: func.isRequired,
+  manga: shape({
+    id: string.isRequired,
+  }).isRequired,
+  isMangaFavourite: bool.isRequired,
   onClick: func.isRequired,
 };
