@@ -21,9 +21,8 @@ def data_fetcher(url):
 
 
 def fetch_manga_data():
-
     mangas = []
-    statuses = ["ongoing", "completed"]
+    statuses = ["ongoing"]
 
     for status in statuses:
         last_page = 1
@@ -50,8 +49,8 @@ def fetch_manga_data():
                     datetime.strptime(last_updated_raw, "%b %d,%y")
                 )
                 author = r.find("span", "genres-item-author").text.strip()
-                ratings = r.find("em", "genres-item-rate").text.strip()
-
+                ratings_el = r.find("em", "genres-item-rate")
+                ratings = ratings_el.text.strip() if ratings_el else None
                 mangas.append(
                     {
                         "id": manga_link.split("-")[1],
@@ -62,9 +61,11 @@ def fetch_manga_data():
                         "last_updated": last_updated,
                         "status": status,
                         "image": image,
+                        # "image_width": width,
+                        # "image_height": height,
                     }
                 )
-
+            print(url)
             page_no_wrapper = soup.find("div", class_="panel-page-number")
             last_page = (
                 page_no_wrapper.find("a", class_="page-last")
@@ -72,6 +73,7 @@ def fetch_manga_data():
                 .split(")")[0]
             )
             last_page = int(last_page)
+            print(last_page, current_page)
             current_page += 1
     return mangas
 
