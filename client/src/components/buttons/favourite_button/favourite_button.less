@@ -1,0 +1,40 @@
+.animation(@arguments) {
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  animation: @arguments;
+}
+
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name {
+    @arguments();
+  }
+  @-webkit-keyframes @name {
+    @arguments();
+  }
+  @keyframes @name {
+    @arguments();
+  }
+}
+
+.favouriteButtonWrapper {
+  > .favourited {
+    .animation(bounceIn 0.5s);
+  }
+
+  .keyframes(bounceIn;{
+      0% { 
+        opacity: 0; 
+        transform: scale(0.3);
+     }
+     50% { 
+        opacity: 1;
+        transform: scale(1.2);
+     }
+     70% {
+        transform: scale(0.5);
+     }
+     100% {
+        transform: scale(1);
+     }
+  });
+}
