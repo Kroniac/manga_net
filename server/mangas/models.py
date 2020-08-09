@@ -23,6 +23,8 @@ class Mangas(models.Model):
     title = models.TextField(null=True)
     last_updated = models.IntegerField(null=True)
     image = models.TextField(null=True)
+    image_width = models.FloatField(null=True)
+    image_height = models.FloatField(null=True)
     link = models.TextField(null=True)
     ratings = models.FloatField(null=True)
 

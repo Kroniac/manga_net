@@ -15,6 +15,8 @@ class MangasSerializer(serializers.ModelSerializer):
             "last_updated",
             "status",
             "image",
+            "image_width",
+            "image_height",
         )
 
 
