@@ -7,14 +7,15 @@ import { bool, func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
 
-import { CustomHooks, Libs } from '#config/import_paths';
+import { Components, CustomHooks, Libs } from '#config/import_paths';
 
-import { FavourteButton } from './favourite_buton';
 import { ReturnMangaStatusInfo } from './utils';
 
 const { TabPane } = Tabs;
 
 const { SanitiazeTitle, ReturnFormattedDateFromUtcSecs } = Libs.Utils();
+
+const { FavouriteButton } = Components.Buttons();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 
@@ -116,9 +117,9 @@ export const MangaDetails = React.memo(({
                     shape = "round"
                     style = {{ marginLeft: 4 }}
                   >
-                    <FavourteButton
-                      manga = {data}
-                      isMangaFavourite = {isMangaFavourite}
+                    <FavouriteButton
+                      item = {data}
+                      isFavourite = {isMangaFavourite}
                       onClick = {onFavouriteButtonClick}
                     />
                   </Button>

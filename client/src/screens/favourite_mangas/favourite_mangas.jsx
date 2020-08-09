@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Empty, Typography } from 'antd';
 import './favourite_mangas.less';
 
-import { CustomHooks } from '#config/import_paths';
+import { Components, CustomHooks } from '#config/import_paths';
 
-import { FavourteButton } from '../home/favourite_buton';
+const { MasonryList } = Components.MasonryList();
+const { MangaCard } = Components.Cards();
 
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
 
@@ -25,23 +26,19 @@ const FavouriteMangas = () => {
   }
 
   return (
-    <div className = "favouriteMangasWrapper">
-      {Object.keys(favouritedMangasById).map((id) => (
-        <figure key = {id}>
-          <img alt = "example" referrerPolicy = "no-referrer" src = {favouritedMangasById[id].image} />
-          <div className = "favouriteMangasTitleWrapper">
-            <Typography.Text>{favouritedMangasById[id].title}</Typography.Text>
-          </div>
-          <div className = "favouriteMangasFavouriteButtonWrapper">
-            <FavourteButton
-              manga = {favouritedMangasById[id]}
-              isMangaFavourite = {isMangaFavourited(favouritedMangasById[id].id)}
-              onClick = {_onFavouriteButtonClick}
-            />
-          </div>
-        </figure>
-      ))}
-    </div>
+
+    <MasonryList
+      items = {Object.values(favouritedMangasById)}
+      renderItems = {(item) => (
+        <MangaCard
+          key = {item.id}
+          manga = {item}
+          isMangaFavourite = {isMangaFavourited(item.id)}
+          onFavouriteClick = {_onFavouriteButtonClick}
+        />
+      )}
+    />
+
   );
 };
 

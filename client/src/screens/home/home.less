@@ -1,22 +1,6 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
-  > .navBarWrapper {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px 10px;
-
-    > .navBarItem {
-      padding: 5px 10px;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    > .navBarItemActive {
-      color: #177ddc;
-      border-style: solid;
-      border-width: 0 0 1.5px 0px;
-    }
-  }
 }
 
 .mainContentContainer {
@@ -125,47 +109,6 @@
   justify-content: center;
   padding: 1rem;
   zoom: 1.5;
-}
-
-.keyframes(@name; @arguments) {
-  @-moz-keyframes @name {
-    @arguments();
-  }
-  @-webkit-keyframes @name {
-    @arguments();
-  }
-  @keyframes @name {
-    @arguments();
-  }
-}
-
-.animation(@arguments) {
-  -webkit-animation: @arguments;
-  -moz-animation: @arguments;
-  animation: @arguments;
-}
-
-.homeFavouriteButtonWrapper {
-  > .favourited {
-    .animation(bounceIn 0.5s);
-  }
-
-  .keyframes(bounceIn;{
-      0% { 
-        opacity: 0; 
-        transform: scale(0.3);
-     }
-     50% { 
-        opacity: 1;
-        transform: scale(1.2);
-     }
-     70% {
-        transform: scale(0.5);
-     }
-     100% {
-        transform: scale(1);
-     }
-  });
 }
 
 .mangaDetailsChapterListItemAvatar {

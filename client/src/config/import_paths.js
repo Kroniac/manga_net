@@ -4,6 +4,7 @@ export const Screens = {
   Manga: () => require('../screens/manga').default,
   MangaChapter: () => require('../screens/manga_chapter/manga_chapter').default,
   FavouriteMangas: () => require('../screens/favourite_mangas/favourite_mangas').default,
+  TopMangas: () => require('../screens/top_mangas/top_mangas').default,
 };
 
 export const Libs = {
@@ -23,4 +24,7 @@ export const Urls = {
 
 export const Components = {
   LazyLoadImage: () => require('../components/lazy_load_image/lazy_load_image'),
+  MasonryList: () => require('../components/masonry_list/masonry_list.jsx'),
+  Cards: () => require('../components/cards/index.js'),
+  Buttons: () => require('../components/buttons/index.js'),
 };

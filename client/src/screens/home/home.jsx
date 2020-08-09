@@ -5,15 +5,16 @@ import { func, shape, string } from 'prop-types';
 import _ from 'lodash';
 import './home.less';
 
-import { FavourteButton } from './favourite_buton';
 import { MangaDetails } from './manga_details';
 import { ReturnMangaStatusInfo } from './utils';
 import Search from '../../antd/search';
 
 import HomeImage from '../../images/ret.png';
-import { CustomHooks, Libs } from '#config/import_paths';
+import { Components, CustomHooks, Libs } from '#config/import_paths';
 
 const { SanitiazeTitle } = Libs.Utils();
+
+const { FavouriteButton } = Components.Buttons();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
@@ -60,9 +61,9 @@ const Home = ({ match, history }) => {
         <Tag className = "homeSearchOptionStatus" color = {ReturnMangaStatusInfo(manga.status).color}>
           {ReturnMangaStatusInfo(manga.status).title}
         </Tag>
-        <FavourteButton
-          manga = {manga}
-          isMangaFavourite = {isMangaFavourited(manga.id)}
+        <FavouriteButton
+          item = {manga}
+          isFavourite = {isMangaFavourited(manga.id)}
           onClick = {_onFavouriteButtonClick}
         />
       </div>
@@ -76,7 +77,6 @@ const Home = ({ match, history }) => {
 
   return (
     <div className = "mainContainer">
-      <NavBar />
       <div className = "mainContentContainer">
         <div
           className = {
@@ -120,13 +120,6 @@ const Home = ({ match, history }) => {
     </div>
   );
 };
-
-const NavBar = () => (
-  <div className = "navBarWrapper">
-    <NavLink tabIndex = {-1} activeClassName = "navBarItemActive" exact to = "/" className = "navBarItem">Home</NavLink>
-    <NavLink tabIndex = {-1} activeClassName = "navBarItemActive" to = "/favourites" className = "navBarItem">Favourites</NavLink>
-  </div>
-);
 
 Home.propTypes = {
   match: shape({
