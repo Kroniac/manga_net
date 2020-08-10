@@ -3,18 +3,61 @@
   position: relative;
   width: 170px;
   border-radius: 10px;
-  transition: opacity .4s ease-in-out;
+  transition: .6s ease;
   border: solid 0.1px rgba(255, 255, 255, 0.65);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-  img {
-    width: 100%;
-    border-radius: inherit;
+  .mangaCardImageWrapper {
+    position: relative;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      border-radius: inherit;
+      transition: .6s ease;
+    }
+
+    .mangaCardExtraInfoWrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 2px 10px;
+      border-radius: 10px;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .mangaCardShowDetailsWrapper {
+        visibility: hidden;
+      }
+
+      &:hover {
+        .mangaCardShowDetailsWrapper {
+          visibility: visible;
+        }
+
+        &:hover + img {
+          opacity: 0.3;
+          transform: scale(0.94);
+        }
+      }
+    }
   }
 
   .favouriteMangasTitleWrapper {
     padding: 2px 4px;
   }
   .favouriteMangasFavouriteButtonWrapper{
+      z-index: 2;
       position: absolute;
       top: 5px;
       right: 5px;

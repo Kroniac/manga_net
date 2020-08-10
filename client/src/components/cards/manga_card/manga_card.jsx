@@ -7,14 +7,21 @@ import { Components } from '#config/import_paths';
 
 const { FavouriteButton } = Components.Buttons();
 
-const MangaCard = ({ manga, isMangaFavourite, onFavouriteClick }) => (
-  <figure className = "mangaCardWrapper">
-    <img
-      style = {{ width: 170, height: (manga.image_height / manga.image_width) * 170 }}
-      alt = "example"
-      referrerPolicy = "no-referrer"
-      src = {manga.image}
-    />
+const MangaCard = ({ manga, isMangaFavourite, onFavouriteClick, className, onShowDetails }) => (
+  <figure className = {['mangaCardWrapper', className].join(' ')}>
+    <div onClick = {() => onShowDetails(manga)} className = "mangaCardImageWrapper">
+      <div className = "mangaCardExtraInfoWrapper">
+        <Typography.Title className = "mangaCardShowDetailsWrapper" level = {4}>
+          Show Details
+        </Typography.Title>
+      </div>
+      <img
+        style = {{ width: 170, height: (manga.image_height / manga.image_width) * 170 }}
+        alt = "example"
+        referrerPolicy = "no-referrer"
+        src = {manga.image}
+      />
+    </div>
     <div className = "favouriteMangasTitleWrapper">
       <Typography.Text>{manga.title}</Typography.Text>
     </div>
