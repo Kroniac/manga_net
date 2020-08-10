@@ -6,19 +6,21 @@ import { Waypoint } from 'react-waypoint';
 
 import './top_mangas.less';
 
-import { Components, CustomHooks, Urls } from '#config/import_paths';
+import { Components, CustomHooks, Libs, Urls } from '#config/import_paths';
 
 const { MasonryList } = Components.MasonryList();
 const { MangaCard } = Components.Cards();
+
+const { SanitiazeTitle } = Libs.Utils();
 
 const { ApiUrls } = Urls.ApiUrls();
 
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
 
 const INITIAL_PAGE = 1;
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
-const TopMangas = () => {
+const TopMangas = ({ history }) => {
   const { favouritedMangasById, isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
   const [mangas, setMangas] = useState([]);
   const [nextPage, setNextPage] = useState(null);
@@ -66,21 +68,25 @@ const TopMangas = () => {
     }
   };
 
+  const _onShowDetails = (manga) => history.push(`${manga.id}-${SanitiazeTitle(manga.title)}`);
+
   return (
     <div className = "topMangaWrapper">
       <MasonryList
         items = {mangas}
         renderItems = {(item) => (
           <MangaCard
+            className = "topMangaMangaCard"
             key = {item.id}
             manga = {item}
             isMangaFavourite = {isMangaFavourited(item.id)}
             onFavouriteClick = {_onFavouriteClick}
+            onShowDetails = {_onShowDetails}
           />
         )}
       />
       {_waypointEl()}
-      {_loadingEl()}
+      {/* {_loadingEl()} */}
     </div>
   );
 };
