@@ -16,6 +16,7 @@ export const CustomHooks = {
   UseLocalStorage: () => require('../hooks/useLocalStorage'),
   UseDataApi: () => require('../hooks/useDataApi'),
   UseFavourtiedManga: () => require('../hooks/useFavouritedManga'),
+  UseSavedMangaReadPos: () => require('../hooks/useSavedMangaReadPos'),
 };
 
 export const Urls = {
