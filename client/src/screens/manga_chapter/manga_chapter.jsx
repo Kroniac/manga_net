@@ -15,11 +15,13 @@ const { SanitiazeTitle } = Libs.Utils();
 
 const { LazyLoadImage } = Components.LazyLoadImage();
 const { useDataApi } = CustomHooks.UseDataApi();
+const { useSavedMangaReadPos } = CustomHooks.UseSavedMangaReadPos();
 
 const { ApiUrls } = Urls.ApiUrls();
 
 let isDropdownVisible = false;
 const MangaChapter = ({ match, history }) => {
+  const { saveMangaReadPos } = useSavedMangaReadPos();
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
     ApiUrls.baseUrl
     + ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`),
@@ -32,11 +34,21 @@ const MangaChapter = ({ match, history }) => {
     window.addEventListener('scroll', _onScroll);
     doFetch(ApiUrls.baseUrl
       + ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`));
-
     return () => {
       window.addEventListener('scroll', _onScroll);
     };
   }, [match.params.chapterId]);
+
+  useEffect(() => {
+    if (data) {
+      saveMangaReadPos({
+        id: match.params.mangaId,
+        chapterId: match.params.chapterId,
+        title: data.manga_title,
+        chapeterTitle: data.title,
+      });
+    }
+  }, [data]);
 
   const _returnChapterPath = (mangaId, chapterId, mangaTitle) => `${mangaId}-${chapterId}-${SanitiazeTitle(mangaTitle)}`;
 

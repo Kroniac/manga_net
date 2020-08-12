@@ -7,6 +7,7 @@ import { bool, func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
 
+import { date } from 'locutus/php/datetime';
 import { Components, CustomHooks, Libs } from '#config/import_paths';
 
 import { ReturnMangaStatusInfo } from './utils';
@@ -21,9 +22,8 @@ const { useDataApi } = CustomHooks.UseDataApi();
 
 const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
   if (prevProps.mangaId !== nextProps.mangaId) return false;
-  if (prevProps.isMangaFavourite !== nextProps.isMangaFavourite) {
-    return false;
-  }
+  if (prevProps.isMangaFavourite !== nextProps.isMangaFavourite) return false;
+  if (prevProps.mangaReadPos !== nextProps.mangaReadPos) return false;
 
   return true;
 };
@@ -31,7 +31,7 @@ const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
 let chaptersOriginalCopy = [];
 
 export const MangaDetails = React.memo(({
-  mangaId, isMangaFavourite, onFavouriteButtonClick, history,
+  mangaId, isMangaFavourite, onFavouriteButtonClick, history, mangaReadPos,
 }) => {
   const [chapters, setChapters] = useState([]);
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
@@ -45,7 +45,7 @@ export const MangaDetails = React.memo(({
       const updatedChapters = data.chapters.map((chapter, index) => ({
         ...chapter,
         chapterIndex: String(data.chapters.length - index).padStart(String(data.chapters.length).length, '0'),
-        displayTitle: chapter.title,
+        displayTitle: _getModifiedChapterTitle(chapter.title, chapter.id),
         displayTime: ReturnFormattedDateFromUtcSecs(chapter.last_updated),
       }));
       chaptersOriginalCopy = updatedChapters;
@@ -57,13 +57,31 @@ export const MangaDetails = React.memo(({
     doFetch(`http://localhost:8000/mangas/manga_info/${mangaId}/`);
   }, [mangaId]);
 
+  const _getModifiedChapterTitle = (chapterTitle, chapterId) => {
+    const regex = new RegExp(`\\b${String(chapterId)}\\b`);
+    if (chapterTitle.search(regex) > -1) return chapterTitle;
+
+    const titleWords = chapterTitle.split(' ');
+    for (let i = 0; i < titleWords.length; i++) {
+      if (titleWords[i].search('Chapter') > -1) {
+        const subTitleSplitted = titleWords[i].split('Chapter');
+        const lastIndex = subTitleSplitted.length - 1;
+        subTitleSplitted[lastIndex] = ` ${chapterId} ${subTitleSplitted[lastIndex]}`;
+        titleWords[i] = subTitleSplitted.join('Chapter');
+      }
+    }
+
+    return titleWords.join(' ');
+  };
+
   const _returnChapterPath = (chapterId, mangaTitle) => {
     const path = `chapter/${mangaId}-${chapterId}-${SanitiazeTitle(mangaTitle)}`;
     return path;
   };
 
   const _onReadEpisodeClick = () => {
-    const path = _returnChapterPath(data.chapters[data.chapters.length - 1].id, data.title);
+    const id = mangaReadPos ? mangaReadPos.chapterId : data.chapters[data.chapters.length - 1].id;
+    const path = _returnChapterPath(id, data.title);
 
     history.push(path);
   };
@@ -82,7 +100,7 @@ export const MangaDetails = React.memo(({
       {isLoading || !data ? <div className = "mangaDetailsSpinner"><Spin size = "large" /></div> : (
         <>
           <div className = "mangaDetailsCardWrapper">
-            <div className = "mangaDetailsCoverWrapper">
+            <div className = "mangaDetailsCoverWrapper" style = {{}}>
               <img
                 referrerPolicy = "no-referrer"
                 alt = {data.alt}
@@ -109,7 +127,9 @@ export const MangaDetails = React.memo(({
               <div>
                 <div className = "flexContainer">
                   <Button onClick = {_onReadEpisodeClick} type = "primary" shape = "round">
-                    Read First Chapter
+                    {mangaReadPos
+                      ? `Continue Reading Chapter ${mangaReadPos.chapterId}`
+                      : 'Read First Chapter'}
                   </Button>
                   <Button
                     onClick = {() => onFavouriteButtonClick(data.id)}

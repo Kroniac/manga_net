@@ -18,12 +18,14 @@ const { FavouriteButton } = Components.Buttons();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
+const { useSavedMangaReadPos } = CustomHooks.UseSavedMangaReadPos();
 
 const THROTTLE_TIME = 500;
 
 const Home = ({ match, history }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const { isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
+  const { savedMangaReadPosById } = useSavedMangaReadPos();
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
     'http://localhost:8000/mangas/mangas/',
     { results: [] },
@@ -99,6 +101,7 @@ const Home = ({ match, history }) => {
                 mangaId = {match.params.mangaId}
                 history = {history}
                 isMangaFavourite = {isMangaFavourited(match.params.mangaId)}
+                mangaReadPos = {savedMangaReadPosById[match.params.mangaId]}
                 onFavouriteButtonClick = {_onFavouriteButtonClick}
               />
             ) : null
