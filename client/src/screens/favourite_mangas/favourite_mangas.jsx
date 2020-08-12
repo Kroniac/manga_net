@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
-import { Empty, Typography } from 'antd';
+import React from 'react';
+import { Empty } from 'antd';
 import './favourite_mangas.less';
 
-import { Components, CustomHooks } from '#config/import_paths';
+import { Components, CustomHooks, Libs } from '#config/import_paths';
 
 const { MasonryList } = Components.MasonryList();
 const { MangaCard } = Components.Cards();
 
+const { SanitiazeTitle } = Libs.Utils();
+
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
 
-const FavouriteMangas = () => {
+const FavouriteMangas = ({ history }) => {
   const { favouritedMangasById, isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
 
   const _onFavouriteButtonClick = (manga) => {
@@ -25,8 +27,9 @@ const FavouriteMangas = () => {
     );
   }
 
-  return (
+  const _onShowDetails = (manga) => history.push(`${manga.id}-${SanitiazeTitle(manga.title)}`);
 
+  return (
     <MasonryList
       items = {Object.values(favouritedMangasById)}
       renderItems = {(item) => (
@@ -35,6 +38,7 @@ const FavouriteMangas = () => {
           manga = {item}
           isMangaFavourite = {isMangaFavourited(item.id)}
           onFavouriteClick = {_onFavouriteButtonClick}
+          onShowDetails = {() => _onShowDetails(item)}
         />
       )}
     />
