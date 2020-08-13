@@ -93,8 +93,17 @@ const MangaChapter = ({ match, history }) => {
                     {data.manga_title}
                   </Typography.Title>
                   <div style = {{ flex: 1 }} />
-                  <Button ghost onClick = {_onPrevChapter}>Prev Chapter</Button>
-                  <Button ghost style = {{ marginLeft: 7 }} onClick = {_onNextChapter}>Next Chapter</Button>
+                  <Button disabled = {!data.prev_chapter_id} ghost onClick = {_onPrevChapter}>
+                    Prev Chapter
+                  </Button>
+                  <Button
+                    disabled = {!data.next_chapter_id}
+                    ghost
+                    style = {{ marginLeft: 7 }}
+                    onClick = {_onNextChapter}
+                  >
+                    Next Chapter
+                  </Button>
                 </div>
                 <Select
                   ref = {chapterMenuRef}
@@ -105,17 +114,15 @@ const MangaChapter = ({ match, history }) => {
                   value = {match.params.chapterId}
                   onChange = {_onSelectChapter}
                 >
-                  {
-                    data.chapters.map((chapter) => (
-                      <Option
-                        key = {chapter.number}
-                        className = "mangaChapterChaptersOption"
-                        value = {chapter.number}
-                      >
-                        {chapter.title}
-                      </Option>
-                    ))
-                  }
+                  {data.chapters.map((chapter) => (
+                    <Option
+                      key = {chapter.number}
+                      className = "mangaChapterChaptersOption"
+                      value = {chapter.number}
+                    >
+                      {chapter.title}
+                    </Option>
+                  ))}
                 </Select>
               </PageHeader>
             </Headroom>
@@ -126,7 +133,6 @@ const MangaChapter = ({ match, history }) => {
         <div className = "mangaChapterSpinner">
           <Spin style = {{ zoom: 1.5 }} size = "large" />
         </div>
-
       ) : (
         <>
           {data.images.map((item) => (

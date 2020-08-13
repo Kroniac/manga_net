@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
+import { func, string } from 'prop-types';
 import animationData from './scroll_down.json';
 
 const KEEP_SCROLLING = 0.3;
@@ -9,6 +10,8 @@ export const NextPageBox = ({ chapterId, navigateToChapter }) => {
   const [intersectionRatio, setIntersectionRatio] = useState(0);
   const placeholderRef = useRef();
   useEffect(() => {
+    if (!chapterId) return () => {};
+
     const options = {
       root: null,
       rootMargin: '0px',
@@ -36,8 +39,15 @@ export const NextPageBox = ({ chapterId, navigateToChapter }) => {
     loop: true,
     autoplay: true,
     animationData,
-
   };
+
+  if (!chapterId) {
+    <div className = "nextPageWrapper" ref = {placeholderRef}>
+      <span className = "nextPageBoxLabel">
+        You&apos; reached the end
+      </span>
+    </div>;
+  }
 
   return (
     <div className = "nextPageWrapper" ref = {placeholderRef}>
@@ -50,4 +60,13 @@ export const NextPageBox = ({ chapterId, navigateToChapter }) => {
       />
     </div>
   );
+};
+
+NextPageBox.propTypes = {
+  chapterId: string,
+  navigateToChapter: func.isRequired,
+};
+
+NextPageBox.defaultProps = {
+  chapterId: null,
 };
