@@ -8,23 +8,30 @@ export const useDataApi = (initialUrl, initialData, skipOnMount = false) => {
   const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(!skipOnMount);
   const [apiError, setApiError] = useState(null);
+
   useEffect(() => {
     if (!skipOnMount || didMountRef.current) {
-      const fetchData = async () => {
-        setApiError(false);
-        setIsLoading(true);
-        try {
-          const result = await axios(url);
-          setData(result.data);
-        } catch (error) {
-          setApiError(error);
-        }
-        setIsLoading(false);
-      };
-      fetchData();
+      _fetchData();
     } else didMountRef.current = true;
   }, [url]);
-  return [{ data, isLoading, apiError }, setUrl];
+
+  const _fetchData = async () => {
+    setApiError(false);
+    setIsLoading(true);
+    try {
+      const result = await axios(url);
+      setData(result.data);
+    } catch (error) {
+      setApiError(error);
+    }
+    setIsLoading(false);
+  };
+
+  const retry = () => {
+    _fetchData();
+  };
+
+  return [{ data, isLoading, apiError }, setUrl, _fetchData];
 };
 
 // export default useDataApi;

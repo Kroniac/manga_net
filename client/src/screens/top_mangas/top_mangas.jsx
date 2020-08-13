@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import QueryString from 'query-string';
-import { Button, Result, Spin } from 'antd';
+import { Spin } from 'antd';
 
 import { Waypoint } from 'react-waypoint';
 

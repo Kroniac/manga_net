@@ -17,6 +17,7 @@ const { TabPane } = Tabs;
 const { SanitiazeTitle, ReturnFormattedDateFromUtcSecs } = Libs.Utils();
 
 const { FavouriteButton } = Components.Buttons();
+const { ErrorView } = Components.ErrorView();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 
@@ -24,7 +25,6 @@ const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
   if (prevProps.mangaId !== nextProps.mangaId) return false;
   if (prevProps.isMangaFavourite !== nextProps.isMangaFavourite) return false;
   if (prevProps.mangaReadPos !== nextProps.mangaReadPos) return false;
-  if (prevProps.apiError !== nextProps.apiError) return false;
 
   return true;
 };
@@ -32,10 +32,10 @@ const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
 let chaptersOriginalCopy = [];
 
 export const MangaDetails = React.memo(({
-  mangaId, isMangaFavourite, onFavouriteButtonClick, history, mangaReadPos, apiError,
+  mangaId, isMangaFavourite, onFavouriteButtonClick, history, mangaReadPos,
 }) => {
   const [chapters, setChapters] = useState([]);
-  const [{ data, isLoading, isError }, doFetch] = useDataApi(
+  const [{ data, isLoading, apiError }, doFetch, retryFetch] = useDataApi(
     `http://localhost:8000/mangas/manga_info/${mangaId}/`,
     null,
     false,
@@ -95,6 +95,21 @@ export const MangaDetails = React.memo(({
     });
     setChapters(updatedChapters);
   };
+
+  const _onReload = () => {
+    retryFetch();
+  };
+
+  if (apiError && !data) {
+    return (
+      <ErrorView
+        status = "500"
+        title = "500"
+        subTitle = "Something, went wrong"
+        onReload = {_onReload}
+      />
+    );
+  }
 
   return (
     <div className = "mangaDetailsWrapper">
