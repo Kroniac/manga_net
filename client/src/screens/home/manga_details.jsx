@@ -24,6 +24,7 @@ const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
   if (prevProps.mangaId !== nextProps.mangaId) return false;
   if (prevProps.isMangaFavourite !== nextProps.isMangaFavourite) return false;
   if (prevProps.mangaReadPos !== nextProps.mangaReadPos) return false;
+  if (prevProps.apiError !== nextProps.apiError) return false;
 
   return true;
 };
@@ -31,7 +32,7 @@ const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
 let chaptersOriginalCopy = [];
 
 export const MangaDetails = React.memo(({
-  mangaId, isMangaFavourite, onFavouriteButtonClick, history, mangaReadPos,
+  mangaId, isMangaFavourite, onFavouriteButtonClick, history, mangaReadPos, apiError,
 }) => {
   const [chapters, setChapters] = useState([]);
   const [{ data, isLoading, isError }, doFetch] = useDataApi(

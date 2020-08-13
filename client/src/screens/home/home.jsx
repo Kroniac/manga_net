@@ -15,18 +15,21 @@ import { Components, CustomHooks, Libs } from '#config/import_paths';
 const { SanitiazeTitle } = Libs.Utils();
 
 const { FavouriteButton } = Components.Buttons();
+const { Snackbar } = Components.Snackbar();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
 const { useSavedMangaReadPos } = CustomHooks.UseSavedMangaReadPos();
+const { useSnackbar } = CustomHooks.UseSnackbar();
 
 const THROTTLE_TIME = 500;
 
 const Home = ({ match, history }) => {
+  const { isActive, message, openSnackBar } = useSnackbar();
   const [searchQuery, setSearchQuery] = useState('');
   const { isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
   const { savedMangaReadPosById } = useSavedMangaReadPos();
-  const [{ data, isLoading, isError }, doFetch] = useDataApi(
+  const [{ data, isLoading, apiError }, doFetch] = useDataApi(
     'http://localhost:8000/mangas/mangas/',
     { results: [] },
     true,
@@ -37,6 +40,10 @@ const Home = ({ match, history }) => {
       doFetch(`http://localhost:8000/mangas/mangas/?page_size=10&title__icontains=${searchQuery}`);
     }
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (apiError) openSnackBar(apiError);
+  }, [apiError]);
 
   const _onChangeText = useCallback(_.throttle((searchText) => {
     setSearchQuery(searchText);
@@ -120,6 +127,7 @@ const Home = ({ match, history }) => {
           />
         </div>
       </div>
+      <Snackbar isActive = {isActive} message = {message} />
     </div>
   );
 };
