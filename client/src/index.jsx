@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, NavLink, Route, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter, NavLink, Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
 import 'antd/dist/antd.dark.css';
 import './index.less';
@@ -11,6 +11,7 @@ const Home = Screens.Home();
 const MangaChapter = Screens.MangaChapter();
 const FavouriteMangas = Screens.FavouriteMangas();
 const TopMangas = Screens.TopMangas();
+const PageNotFound = Screens.PageNotFound();
 
 const chapteraPathPattern = /^\/chapter\/[a-z0-9]{4,15}-[a-z.0-9]{1,7}-[a-z0-9-]+/;
 
@@ -36,7 +37,7 @@ const App = withRouter(({ location }) => (
         path = "/topmangas"
         component = {TopMangas}
       />
-      {/* <Redirect to = "/" /> */}
+      <Route component = {PageNotFound} />
     </Switch>
   </div>
 ));
