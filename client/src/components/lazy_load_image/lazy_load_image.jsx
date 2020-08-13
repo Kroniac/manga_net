@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import { ApiUrls } from 'src/config/api_urls';
 import Axios from 'axios';
 import { string } from 'prop-types';
 import { Urls } from '#config/import_paths';
