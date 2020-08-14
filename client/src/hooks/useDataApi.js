@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+
+import { Libs } from '#config/import_paths';
+
+const { Wraxios } = Libs.Networking();
 
 export const useDataApi = (initialUrl, initialData, skipOnMount = false) => {
   const didMountRef = useRef(false);
@@ -10,16 +13,15 @@ export const useDataApi = (initialUrl, initialData, skipOnMount = false) => {
   const [apiError, setApiError] = useState(null);
 
   useEffect(() => {
-    if (!skipOnMount || didMountRef.current) {
-      _fetchData();
-    } else didMountRef.current = true;
+    if (!skipOnMount || didMountRef.current) _fetchData();
+    else didMountRef.current = true;
   }, [url]);
 
   const _fetchData = async () => {
     setApiError(false);
     setIsLoading(true);
     try {
-      const result = await axios(url);
+      const result = await Wraxios({ url });
       setData(result.data);
     } catch (error) {
       setApiError(error);
@@ -27,11 +29,5 @@ export const useDataApi = (initialUrl, initialData, skipOnMount = false) => {
     setIsLoading(false);
   };
 
-  const retry = () => {
-    _fetchData();
-  };
-
   return [{ data, isLoading, apiError }, setUrl, _fetchData];
 };
-
-// export default useDataApi;

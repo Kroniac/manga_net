@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Button, Tag, Tooltip, Typography } from 'antd';
+import { Tag, Tooltip } from 'antd';
 import { func, shape, string } from 'prop-types';
 import _ from 'lodash';
 import './home.less';
@@ -33,6 +32,7 @@ const Home = ({ match, history }) => {
     'http://localhost:8000/mangas/mangas/',
     { results: [] },
     true,
+    3000,
   );
 
   useEffect(() => {
@@ -42,7 +42,10 @@ const Home = ({ match, history }) => {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (apiError) openSnackBar(apiError);
+    if (apiError) {
+      if (!apiError.status) openSnackBar('Please check your internet');
+      else openSnackBar(`${apiError.status}: Internal Error`);
+    }
   }, [apiError]);
 
   const _onChangeText = useCallback(_.throttle((searchText) => {
@@ -88,10 +91,8 @@ const Home = ({ match, history }) => {
     <div className = "mainContainer">
       <div className = "mainContentContainer">
         <div
-          className = {
-          match?.params?.mangaId
-            ? ['mainSearchContainer', 'selected'].join(' ') : 'mainSearchContainer'
-        }
+          className = {match?.params?.mangaId
+            ? ['mainSearchContainer', 'selected'].join(' ') : 'mainSearchContainer'}
         >
           <Search
             frameStyles = {{ maxWidth: 500, zIndex: 1, width: '75%', backgroundColor: '#383838' }}
@@ -102,23 +103,19 @@ const Home = ({ match, history }) => {
             placeholder = "Search for manga"
             size = "large"
           />
-          {
-            match?.params?.mangaId ? (
-              <MangaDetails
-                mangaId = {match.params.mangaId}
-                history = {history}
-                isMangaFavourite = {isMangaFavourited(match.params.mangaId)}
-                mangaReadPos = {savedMangaReadPosById[match.params.mangaId]}
-                onFavouriteButtonClick = {_onFavouriteButtonClick}
-              />
-            ) : null
-          }
+          {match?.params?.mangaId ? (
+            <MangaDetails
+              mangaId = {match.params.mangaId}
+              history = {history}
+              isMangaFavourite = {isMangaFavourited(match.params.mangaId)}
+              mangaReadPos = {savedMangaReadPosById[match.params.mangaId]}
+              onFavouriteButtonClick = {_onFavouriteButtonClick}
+            />
+            ) : null}
         </div>
         <div
-          className = {
-          match?.params?.mangaId
-            ? ['homeCoverImageWrapper', 'hideImage'].join(' ') : 'homeCoverImageWrapper'
-          }
+          className = {match?.params?.mangaId
+            ? ['homeCoverImageWrapper', 'hideImage'].join(' ') : 'homeCoverImageWrapper'}
         >
           <img
             referrerPolicy = "no-referrer"
