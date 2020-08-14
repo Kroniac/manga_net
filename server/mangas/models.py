@@ -2,11 +2,6 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 
-from mangas.manga_eden import fetch_manga_info
-
-
-# Create your models here.
-
 
 class Mangas(models.Model):
     class STATUS(models.TextChoices):

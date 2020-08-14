@@ -1,16 +1,18 @@
-from rest_framework import viewsets
 from django_filters import rest_framework as filters
+from django.http import Http404
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
-from django.http import Http404, HttpResponse, FileResponse
 from rest_framework.response import Response
+
 from mangas.serializers import MangasSerializer, MangaInfoSerializer
 
 from mangas.filters import MangasFilter
 
-from mangas.models import Mangas, MangaInfo
+from mangas.models import Mangas
 
 from manganet.pagination import StandardResultsSetPagination
-from mangas.manga_fetcher import (
+
+from mangas.logic import (
     get_manga_chapter_image,
     fetch_manga_info,
     fetch_manga_chapter,
@@ -44,28 +46,25 @@ class MangaInfoView(APIView):
     serializer_class = MangaInfoSerializer
 
     def get(self, request, pk):
-        data = fetch_manga_info(pk)
-        if data is None:
+        res = fetch_manga_info(pk)
+        if res.status_code == status.HTTP_404_NOT_FOUND:
             raise Http404
-        return Response(data)
-
-
-# class MangaChaptersView(APIView)
+        return Response(status=res.status_code, data=res.data)
 
 
 class MangaChapterView(APIView):
     def get(self, request, pk):
-        data = fetch_manga_chapter(pk)
-        if data is None:
+        res = fetch_manga_chapter(pk)
+        if res.status_code == status.HTTP_404_NOT_FOUND:
             raise Http404
-        return Response(data)
+        return Response(status=res.status_code, data=res.data)
 
 
 class MangaChapterPageView(APIView):
-    def post(self, request, *args):
+    def post(self, request):
         link = request.data["link"]
-        data = get_manga_chapter_image(link)
-        if data is None:
+        res = get_manga_chapter_image(link)
+        if res.status_code == status.HTTP_404_NOT_FOUND:
             raise Http404
 
-        return Response(data)
+        return Response(status=res.status_code, data=res.data)
