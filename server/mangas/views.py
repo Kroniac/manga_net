@@ -25,6 +25,7 @@ class MangasViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = MangasFilter
+    http_method_names = ["get", "options", "head"]
 
 
 class MangaInfoViewSet(viewsets.ModelViewSet):
