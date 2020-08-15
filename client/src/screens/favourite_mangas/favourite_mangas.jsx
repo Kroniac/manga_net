@@ -1,5 +1,5 @@
 import React from 'react';
-import { Empty } from 'antd';
+import { Button, Empty } from 'antd';
 import './favourite_mangas.less';
 
 import { Components, CustomHooks, Libs } from '#config/import_paths';
@@ -19,10 +19,16 @@ const FavouriteMangas = ({ history }) => {
     else favouriteManga(manga);
   };
 
+  const _onCheckoutTopMangas = () => {
+    history.push('/topmangas');
+  };
+
   if (!Object.keys(favouritedMangasById).length) {
     return (
       <div className = "favouriteMangasEmptyWrapper">
-        <Empty description = "You have no favourite mangas yet" />
+        <Empty description = "You have no favourite mangas yet">
+          <Button type = "primary" onClick = {_onCheckoutTopMangas}>Checkout Top Mangas</Button>
+        </Empty>
       </div>
     );
   }
