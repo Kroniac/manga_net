@@ -154,7 +154,7 @@ def fetch_manga_info(manga_id):
                 "author": author,
             },
         )
-    except AttributeError:
+    except (AttributeError, IndexError) as e:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
@@ -213,8 +213,8 @@ def fetch_manga_chapter(chapter_id):
                 "chapters": chapters,
             },
         )
-    except AttributeError:
-        return None
+    except (AttributeError, IndexError):
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def compress_image(image):

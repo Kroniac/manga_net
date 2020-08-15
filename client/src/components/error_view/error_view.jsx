@@ -9,7 +9,10 @@ export const ErrorView = ({ title, status, subTitle, onReload }) => (
       status = {status}
       title = {title}
       subTitle = {subTitle}
-      extra = {<Button onClick = {onReload} type = "primary">Reload</Button>}
+      extra = {[
+        <Button onClick = {onReload} type = "primary">Reload</Button>,
+        <Button onClick = {onReload} type = "primary">Home</Button>,
+      ]}
     />
   </div>
 );

@@ -14,6 +14,8 @@ const { Option } = Select;
 const { SanitiazeTitle } = Libs.Utils();
 
 const { LazyLoadImage } = Components.LazyLoadImage();
+const { ErrorView } = Components.ErrorView();
+
 const { useDataApi } = CustomHooks.UseDataApi();
 const { useSavedMangaReadPos } = CustomHooks.UseSavedMangaReadPos();
 
@@ -22,7 +24,7 @@ const { ApiUrls } = Urls.ApiUrls();
 let isDropdownVisible = false;
 const MangaChapter = ({ match, history }) => {
   const { saveMangaReadPos } = useSavedMangaReadPos();
-  const [{ data, isLoading, isError }, doFetch] = useDataApi(
+  const [{ data, isLoading, apiError }, doFetch, retryFetch] = useDataApi(
     ApiUrls.baseUrl
     + ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`),
     null,
@@ -77,6 +79,21 @@ const MangaChapter = ({ match, history }) => {
   const _onNextChapter = () => {
     _navigateToChapter(data.next_chapter_id);
   };
+
+  const _onReload = () => {
+    retryFetch();
+  };
+
+  if (apiError && !data) {
+    return (
+      <ErrorView
+        status = {apiError.status}
+        title = {apiError.status}
+        subTitle = {apiError.status === 404 ? 'Chapter Not Found' : 'Internal Error'}
+        onReload = {_onReload}
+      />
+    );
+  }
 
   return (
     <div className = "mangaChapterWrapper" style = {isLoading ? { height: '100vh' } : {}}>
