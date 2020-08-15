@@ -8,9 +8,9 @@
   width: 100%;
   height: 100%;
 
-  > .homeCoverImageWrapper {
+  .homeCoverImageWrapper {
     position: absolute;
-    width: 25vw;
+    width: 20vw;
     max-width: 200px;
     z-index: 0;
     margin: auto;
@@ -48,6 +48,71 @@
     margin-top: 0vh;
     transition: margin-top 500ms;
     transition-delay: 100ms;
+  }
+
+  .continueReadingViewListWrapper {
+    margin-top: 10px;
+    transition: opacity 0.5s;
+    visibility: visible;
+
+    .hideImage {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s;
+      // -webkit-transition: opacity 0.3s;
+    }
+
+    @media screen and (max-width: 750px) {
+      margin-top: 4px;
+    }
+  }
+
+  .continueReadingViewWrapper {
+    margin-top: 20px;
+    display: flex;
+    flex: 1;
+    max-width: 500px;
+    width: 80%;
+    flex-direction: column;
+    align-items: center;
+
+    .continueReadingViewItemWrapper {
+      
+      .continueReadingViewItemLink {
+        display: flex;
+      }
+
+      .continueReadingViewListItemAvatar {
+        width: 30px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .continueReadingViewListItemTitle {
+        margin-block-end: 0px;
+        margin-block-start: 0px;
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .ant-list-item-meta-title {
+        margin-right: 2px;
+      }
+
+      @media screen and (max-width: 750px) { 
+        padding: 0px;
+        margin: 3px;
+
+        .continueReadingViewListItemTitle {
+          font-size: 14px;
+        }
+
+        .ant-list-item-meta-title {
+          font-size: 12px;
+          margin-bottom: 0px;
+        }
+      }
+    }
   }
 }
 .homeSearchOption {

@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Tag, Tooltip } from 'antd';
+import { Button, List, Tag, Tooltip, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 import { func, shape, string } from 'prop-types';
 import _ from 'lodash';
+import { RightCircleOutlined } from '@ant-design/icons';
 import './home.less';
 
 import { MangaDetails } from './manga_details';
@@ -27,7 +29,7 @@ const Home = ({ match, history }) => {
   const { isActive, message, openSnackBar } = useSnackbar();
   const [searchQuery, setSearchQuery] = useState('');
   const { isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
-  const { savedMangaReadPosById } = useSavedMangaReadPos();
+  const { savedMangaReadPositions, getMangaPosIfSaved } = useSavedMangaReadPos();
   const [{ data, isLoading, apiError }, doFetch] = useDataApi(
     'http://localhost:8000/mangas/mangas/',
     { results: [] },
@@ -108,10 +110,16 @@ const Home = ({ match, history }) => {
               mangaId = {match.params.mangaId}
               history = {history}
               isMangaFavourite = {isMangaFavourited(match.params.mangaId)}
-              mangaReadPos = {savedMangaReadPosById[match.params.mangaId]}
+              mangaReadPos = {getMangaPosIfSaved(match.params.mangaId)}
               onFavouriteButtonClick = {_onFavouriteButtonClick}
             />
             ) : null}
+          {match?.params?.mangaId ? null : (
+            <ContinueReadingView
+              history = {history}
+              savedMangaReadPositions = {savedMangaReadPositions}
+            />
+          )}
         </div>
         <div
           className = {match?.params?.mangaId
@@ -125,6 +133,63 @@ const Home = ({ match, history }) => {
         </div>
       </div>
       <Snackbar isActive = {isActive} message = {message} />
+    </div>
+  );
+};
+
+const ContinueReadingView = ({ history, savedMangaReadPositions }) => {
+  const _returnChapterPath = (mangaId, chapterId, mangaTitle) => `chapter/${mangaId}-${chapterId}-`
+   + `${SanitiazeTitle(mangaTitle)}`;
+
+  const _onTopMangas = () => {
+    history.push('/topmangas');
+  };
+
+  if (!savedMangaReadPositions.length) {
+    return (
+      <div className = "continueReadingViewWrapper">
+        <div>
+          <Typography.Text>
+            Can&apos;t Decide? Checkout
+          </Typography.Text>
+          <Button onClick = {_onTopMangas} style = {{ marginLeft: 7 }}>Top Mangas</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className = "continueReadingViewWrapper">
+      <Typography.Text>Continue Reading</Typography.Text>
+      <List
+        className = "continueReadingViewListWrapper"
+        size = "small"
+        grid = {{
+          column: savedMangaReadPositions.length >= 2 ? 2 : 1,
+          md: savedMangaReadPositions.length >= 2 ? 2 : 1,
+          sm: 1,
+          xs: 1,
+        }}
+        dataSource = {savedMangaReadPositions.slice(0, 5).map((manga) => manga)}
+        renderItem = {(item) => (
+          <List.Item
+            key = {item.index}
+            className = "continueReadingViewItemWrapper"
+          >
+            <Link
+              className = "continueReadingViewItemLink"
+              style = {{ width: '100%' }}
+              to = {_returnChapterPath(item.id, item.chapterId, item.title)}
+            >
+              <List.Item.Meta
+                style = {{ alignItems: 'center', fontSize: 10 }}
+                title = {`${item.title} - ${item.chapterId}`}
+              />
+              <RightCircleOutlined style = {{ fontSize: 20 }} />
+            </Link>
+          </List.Item>
+        )}
+      />
     </div>
   );
 };
