@@ -7,7 +7,6 @@ import { bool, func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
 
-import { date } from 'locutus/php/datetime';
 import { Components, CustomHooks, Libs } from '#config/import_paths';
 
 import { ReturnMangaStatusInfo } from './utils';
