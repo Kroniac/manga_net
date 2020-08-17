@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { func, shape, string } from 'prop-types';
+import { func, number, shape, string } from 'prop-types';
 import { Button, PageHeader, Select, Spin, Typography } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 import Headroom from 'react-headroom';
 import _ from 'lodash';
 
@@ -52,11 +53,12 @@ const MangaChapter = ({ match, history }) => {
     }
   }, [data]);
 
-  const _returnChapterPath = (mangaId, chapterId, mangaTitle) => `${mangaId}-${chapterId}-${SanitiazeTitle(mangaTitle)}`;
+  const _getChapterPath = (mangaId, chapterId, mangaTitle) => `${mangaId}-${chapterId}-`
+    + `${SanitiazeTitle(mangaTitle)}`;
 
   const _navigateToChapter = (chapterId) => {
     const { mangaId, mangaName } = match.params;
-    const path = _returnChapterPath(mangaId, chapterId, mangaName);
+    const path = _getChapterPath(mangaId, chapterId, mangaName);
     history.replace(path);
   };
 
@@ -72,12 +74,12 @@ const MangaChapter = ({ match, history }) => {
     isDropdownVisible = isVisible;
   };
 
-  const _onPrevChapter = () => {
-    _navigateToChapter(data.prev_chapter_id);
+  const _navigateToManga = () => {
+    history.push(`/${match.params.mangaId}-${SanitiazeTitle(match.params.mangaName)}`);
   };
 
-  const _onNextChapter = () => {
-    _navigateToChapter(data.next_chapter_id);
+  const _navigateToHome = () => {
+    history.push('/');
   };
 
   const _onReload = () => {
@@ -106,41 +108,50 @@ const MangaChapter = ({ match, history }) => {
                 onBack = {() => null}
               >
                 <div className = "mangaChaperPageHeaderContent">
-                  <Typography.Title style = {{ color: 'white' }} level = {4}>
-                    {data.manga_title}
-                  </Typography.Title>
-                  <div style = {{ flex: 1 }} />
-                  <Button disabled = {!data.prev_chapter_id} ghost onClick = {_onPrevChapter}>
-                    Prev Chapter
-                  </Button>
+                  <HomeOutlined onClick = {_navigateToHome} className = "mangaChapterPageHeaderHome" />
                   <Button
-                    disabled = {!data.next_chapter_id}
-                    ghost
-                    style = {{ marginLeft: 7 }}
-                    onClick = {_onNextChapter}
+                    className = "mangaChapterPageTitleButtonWrapper"
+                    onClick = {_navigateToManga}
                   >
-                    Next Chapter
+                    <Typography.Title ellipsis style = {{ color: 'white' }} level = {4}>
+                      {data.manga_title}
+                    </Typography.Title>
                   </Button>
+                  <div style = {{ flex: 1 }} />
+                  <div className = "mangaChapterPrevNextButtonsWithTitle">
+                    <ChapterPrevNextButtons
+                      prevChapterId = {data.prev_chapter_id}
+                      nextChapterId = {data.next_chapter_id}
+                      navigateToChapter = {_navigateToChapter}
+                    />
+                  </div>
+                  <Select
+                    ref = {chapterMenuRef}
+                    getPopupContainer = {() => document.getElementById('area')}
+                    onDropdownVisibleChange = {_onDropdownVisibleChange}
+                    className = "mangaChapterList"
+                    dropdownClassName = "mangaChapterListMenu"
+                    value = {match.params.chapterId}
+                    onChange = {_onSelectChapter}
+                  >
+                    {data.chapters.map((chapter) => (
+                      <Option
+                        key = {chapter.number}
+                        className = "mangaChapterChaptersOption"
+                        value = {chapter.number}
+                      >
+                        {chapter.title}
+                      </Option>
+                    ))}
+                  </Select>
+                  <div className = "mangaChapterPrevNextButtonsHeaderBottom">
+                    <ChapterPrevNextButtons
+                      prevChapterId = {data.prev_chapter_id}
+                      nextChapterId = {data.next_chapter_id}
+                      navigateToChapter = {_navigateToChapter}
+                    />
+                  </div>
                 </div>
-                <Select
-                  ref = {chapterMenuRef}
-                  getPopupContainer = {() => document.getElementById('area')}
-                  onDropdownVisibleChange = {_onDropdownVisibleChange}
-                  className = "mangaChapterList"
-                  dropdownClassName = "mangaChapterListMenu"
-                  value = {match.params.chapterId}
-                  onChange = {_onSelectChapter}
-                >
-                  {data.chapters.map((chapter) => (
-                    <Option
-                      key = {chapter.number}
-                      className = "mangaChapterChaptersOption"
-                      value = {chapter.number}
-                    >
-                      {chapter.title}
-                    </Option>
-                  ))}
-                </Select>
               </PageHeader>
             </Headroom>
           </div>
@@ -173,6 +184,32 @@ MangaChapter.propTypes = {
   history: shape({
     replace: func.isRequired,
   }).isRequired,
+};
+
+const ChapterPrevNextButtons = ({ prevChapterId, nextChapterId, navigateToChapter }) => (
+  <div>
+    <Button disabled = {!prevChapterId} onClick = {() => navigateToChapter(prevChapterId)}>
+      Prev Chapter
+    </Button>
+    <Button
+      disabled = {!nextChapterId}
+      style = {{ marginLeft: 7 }}
+      onClick = {() => navigateToChapter(nextChapterId)}
+    >
+      Next Chapter
+    </Button>
+  </div>
+);
+
+ChapterPrevNextButtons.propTypes = {
+  prevChapterId: string,
+  nextChapterId: string,
+  navigateToChapter: func.isRequired,
+};
+
+ChapterPrevNextButtons.defaultProps = {
+  prevChapterId: null,
+  nextChapterId: null,
 };
 
 export default MangaChapter;
