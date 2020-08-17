@@ -11,7 +11,7 @@ import { ReturnMangaStatusInfo } from './utils';
 import Search from '../../antd/search';
 
 import HomeImage from '../../images/ret.png';
-import { Components, CustomHooks, Libs } from '#config/import_paths';
+import { Components, CustomHooks, Libs, Urls } from '#config/import_paths';
 
 const { SanitiazeTitle } = Libs.Utils();
 
@@ -23,6 +23,8 @@ const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
 const { useSavedMangaReadPos } = CustomHooks.UseSavedMangaReadPos();
 const { useSnackbar } = CustomHooks.UseSnackbar();
 
+const { ApiUrls } = Urls.ApiUrls();
+
 const THROTTLE_TIME = 500;
 
 const Home = ({ match, history }) => {
@@ -31,7 +33,7 @@ const Home = ({ match, history }) => {
   const { isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
   const { savedMangaReadPositions, getMangaPosIfSaved } = useSavedMangaReadPos();
   const [{ data, isLoading, apiError }, doFetch] = useDataApi(
-    'http://localhost:8000/mangas/mangas/',
+    `${ApiUrls.baseUrl}${ApiUrls.mangas}`,
     { results: [] },
     true,
     3000,
@@ -39,7 +41,7 @@ const Home = ({ match, history }) => {
 
   useEffect(() => {
     if (searchQuery.length > 2) {
-      doFetch(`http://localhost:8000/mangas/mangas/?page_size=10&title__icontains=${searchQuery}`);
+      doFetch(`${ApiUrls.baseUrl}${ApiUrls.mangas}?page_size=10&title__icontains=${searchQuery}`);
     }
   }, [searchQuery]);
 

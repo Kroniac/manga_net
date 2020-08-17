@@ -7,7 +7,7 @@ import { bool, func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';
 
-import { Components, CustomHooks, Libs } from '#config/import_paths';
+import { Components, CustomHooks, Libs, Urls } from '#config/import_paths';
 
 import { ReturnMangaStatusInfo } from './utils';
 
@@ -19,6 +19,8 @@ const { FavouriteButton } = Components.Buttons();
 const { ErrorView } = Components.ErrorView();
 
 const { useDataApi } = CustomHooks.UseDataApi();
+
+const { ApiUrls } = Urls.ApiUrls();
 
 const shouldStopMangaDetailsUpdate = (prevProps, nextProps) => {
   if (prevProps.mangaId !== nextProps.mangaId) return false;
@@ -35,7 +37,7 @@ export const MangaDetails = React.memo(({
 }) => {
   const [chapters, setChapters] = useState([]);
   const [{ data, isLoading, apiError }, doFetch, retryFetch] = useDataApi(
-    `http://localhost:8000/mangas/manga_info/${mangaId}/`,
+    `${ApiUrls.baseUrl}${ApiUrls.mangaInfo}${mangaId}/`,
     null,
     false,
   );
@@ -54,7 +56,7 @@ export const MangaDetails = React.memo(({
   }, [data]);
 
   useEffect(() => {
-    doFetch(`http://localhost:8000/mangas/manga_info/${mangaId}/`);
+    doFetch(`${ApiUrls.baseUrl}${ApiUrls.mangaInfo}${mangaId}/`);
   }, [mangaId]);
 
   const _getModifiedChapterTitle = (chapterTitle, chapterId) => {
@@ -139,28 +141,25 @@ export const MangaDetails = React.memo(({
                 <Typography.Title level = {3}>{data.title}</Typography.Title>
                 <Typography.Text level = {3}>- {data.author}</Typography.Text>
               </div>
-              <div>
-                <div className = "flexContainer">
-                  <Button onClick = {_onReadEpisodeClick} type = "primary" shape = "round">
-                    {mangaReadPos
-                      ? `Continue Reading Chapter ${mangaReadPos.chapterId}`
-                      : 'Read First Chapter'}
-                  </Button>
-                  <Button
-                    onClick = {() => onFavouriteButtonClick(data.id)}
-                    type = "primary"
-                    shape = "round"
-                    style = {{ marginLeft: 4 }}
-                  >
-                    <FavouriteButton
-                      item = {data}
-                      isFavourite = {isMangaFavourite}
-                      onClick = {onFavouriteButtonClick}
-                    />
-                  </Button>
-                </div>
+              <div className = "mangaDetailsButtonsWrapper insideCard">
+                <MangaDetailsButtons
+                  onReadChapter = {_onReadEpisodeClick}
+                  onFavourite = {() => onFavouriteButtonClick(data.id)}
+                  readPos = {mangaReadPos}
+                  manga = {data}
+                  isFavourite = {isMangaFavourite}
+                />
               </div>
             </div>
+          </div>
+          <div className = "mangaDetailsButtonsWrapper outsideCard">
+            <MangaDetailsButtons
+              onReadChapter = {_onReadEpisodeClick}
+              onFavourite = {() => onFavouriteButtonClick(data.id)}
+              readPos = {mangaReadPos}
+              manga = {data}
+              isFavourite = {isMangaFavourite}
+            />
           </div>
           <Tabs style = {{ margin: '12px 0px' }} defaultActiveKey = "1" size = "large" onChange = {() => {}}>
             <TabPane
@@ -240,3 +239,25 @@ MangaDetails.propTypes = {
     push: func.isRequired,
   }).isRequired,
 };
+
+const MangaDetailsButtons = ({ onReadChapter, onFavourite, readPos, manga, isFavourite }) => (
+  <div>
+    <Button onClick = {onReadChapter} type = "primary" shape = "round">
+      {readPos
+        ? `Continue Reading Chapter ${readPos.chapterId}`
+        : 'Read First Chapter'}
+    </Button>
+    <Button
+      onClick = {onFavourite}
+      type = "primary"
+      shape = "round"
+      style = {{ marginLeft: 4 }}
+    >
+      <FavouriteButton
+        item = {manga}
+        isFavourite = {isFavourite}
+        onClick = {onFavourite}
+      />
+    </Button>
+  </div>
+);
