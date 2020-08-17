@@ -8,6 +8,8 @@ db.sqlite3-journal
 media
 venv
 .venv
+.ebextensions
+static
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
