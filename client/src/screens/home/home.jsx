@@ -187,7 +187,7 @@ const ContinueReadingView = ({ history, savedMangaReadPositions }) => {
                 style = {{ alignItems: 'center', fontSize: 10 }}
                 title = {`${item.title} - ${item.chapterId}`}
               />
-              <RightCircleOutlined style = {{ fontSize: 20 }} />
+              <RightCircleOutlined style = {{ fontSize: 20, paddingLeft: 5 }} />
             </Link>
           </List.Item>
         )}
