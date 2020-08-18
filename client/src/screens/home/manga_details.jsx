@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Divider, Input, List, Spin, Tabs, Tag, Typography,
 } from 'antd';
-import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
+import InfoCircleOutlined from '@ant-design/icons/InfoCircleOutlined';
+import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import { bool, func, shape, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import htmlEntityEncode from 'locutus/php/strings/html_entity_decode';

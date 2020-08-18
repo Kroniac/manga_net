@@ -3,7 +3,7 @@ import { Button, List, Tag, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { func, shape, string } from 'prop-types';
 import _ from 'lodash';
-import { RightCircleOutlined } from '@ant-design/icons';
+import RightCircleOutlined from '@ant-design/icons/RightCircleOutlined';
 import './home.less';
 
 import { MangaDetails } from './manga_details';

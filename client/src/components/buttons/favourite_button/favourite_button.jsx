@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StarFilled, StarOutlined } from '@ant-design/icons';
+import StarFilled from '@ant-design/icons/StarFilled';
+import StarOutlined from '@ant-design/icons/StarOutlined';
 import { bool, func, shape, string } from 'prop-types';
 
 import './favourite_button.less';

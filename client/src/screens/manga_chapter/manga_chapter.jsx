@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { func, number, shape, string } from 'prop-types';
+import { func, shape, string } from 'prop-types';
 import { Button, PageHeader, Select, Spin, Typography } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
+import HomeOutlined from '@ant-design/icons/HomeOutlined';
 import Headroom from 'react-headroom';
 import _ from 'lodash';
 
@@ -125,25 +125,27 @@ const MangaChapter = ({ match, history }) => {
                       navigateToChapter = {_navigateToChapter}
                     />
                   </div>
-                  <Select
-                    ref = {chapterMenuRef}
-                    getPopupContainer = {() => document.getElementById('area')}
-                    onDropdownVisibleChange = {_onDropdownVisibleChange}
-                    className = "mangaChapterList"
-                    dropdownClassName = "mangaChapterListMenu"
-                    value = {match.params.chapterId}
-                    onChange = {_onSelectChapter}
-                  >
-                    {data.chapters.map((chapter) => (
-                      <Option
-                        key = {chapter.number}
-                        className = "mangaChapterChaptersOption"
-                        value = {chapter.number}
-                      >
-                        {chapter.title}
-                      </Option>
-                    ))}
-                  </Select>
+                  <div style = {{ width: '100%' }}>
+                    <Select
+                      ref = {chapterMenuRef}
+                      getPopupContainer = {() => document.getElementById('area')}
+                      onDropdownVisibleChange = {_onDropdownVisibleChange}
+                      className = "mangaChapterList"
+                      dropdownClassName = "mangaChapterListMenu"
+                      value = {match.params.chapterId}
+                      onChange = {_onSelectChapter}
+                    >
+                      {data.chapters.map((chapter) => (
+                        <Option
+                          key = {chapter.number}
+                          className = "mangaChapterChaptersOption"
+                          value = {chapter.number}
+                        >
+                          {chapter.title}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
                   <div className = "mangaChapterPrevNextButtonsHeaderBottom">
                     <ChapterPrevNextButtons
                       prevChapterId = {data.prev_chapter_id}

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, NavLink, Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Switch, withRouter } from 'react-router-dom';
 
 import 'antd/dist/antd.dark.css';
 import './index.less';
