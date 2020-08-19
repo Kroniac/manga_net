@@ -25,7 +25,7 @@ SECRET_KEY = "y&a4qh@9sownkzfk-%sc&+7wh6egewdyp-r2hvj-g*cue3q20%"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["manganet.s3-website-us-east-1.amazonaws.com"]
 
 
 # Application definition
@@ -57,13 +57,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3001",
-]
+CORS_ORIGIN_WHITELIST = ["http://manganet.s3-website-us-east-1.amazonaws.com"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3001",
-]
+CSRF_TRUSTED_ORIGINS = ["http://manganet.s3-website-us-east-1.amazonaws.com"]
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -105,16 +101,28 @@ WSGI_APPLICATION = "manganet.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "mangasnet",
-        "USER": "postgres",
-        "PASSWORD": "qwerty",
-        "host": "localhost",
-        "PORT": "5432",
+if "RDS_DB_NAME" in os.environ:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": os.environ["RDS_DB_NAME"],
+            "USER": os.environ["RDS_USERNAME"],
+            "PASSWORD": os.environ["RDS_PASSWORD"],
+            "HOST": os.environ["RDS_HOSTNAME"],
+            "PORT": os.environ["RDS_PORT"],
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "manganet",
+            "USER": "postgres",
+            "PASSWORD": "qwerty",
+            "host": "localhost",
+            "PORT": "5432",
+        }
+    }
 
 
 # Password validation
@@ -148,3 +156,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
+STATIC_ROOT = "static"
