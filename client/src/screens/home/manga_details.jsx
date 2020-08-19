@@ -145,7 +145,7 @@ export const MangaDetails = React.memo(({
               <div className = "mangaDetailsButtonsWrapper insideCard">
                 <MangaDetailsButtons
                   onReadChapter = {_onReadEpisodeClick}
-                  onFavourite = {() => onFavouriteButtonClick(data.id)}
+                  onFavourite = {() => onFavouriteButtonClick(data)}
                   readPos = {mangaReadPos}
                   manga = {data}
                   isFavourite = {isMangaFavourite}
@@ -156,7 +156,7 @@ export const MangaDetails = React.memo(({
           <div className = "mangaDetailsButtonsWrapper outsideCard">
             <MangaDetailsButtons
               onReadChapter = {_onReadEpisodeClick}
-              onFavourite = {() => onFavouriteButtonClick(data.id)}
+              onFavourite = {() => onFavouriteButtonClick(data)}
               readPos = {mangaReadPos}
               manga = {data}
               isFavourite = {isMangaFavourite}
