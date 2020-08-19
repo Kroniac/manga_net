@@ -44,7 +44,7 @@ export const NextPageBox = ({ chapterId, navigateToChapter }) => {
   if (!chapterId) {
     <div className = "nextPageWrapper" ref = {placeholderRef}>
       <span className = "nextPageBoxLabel">
-        You&apos; reached the end
+        You&apos;ve reached the end
       </span>
     </div>;
   }
