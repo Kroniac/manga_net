@@ -63,7 +63,11 @@ const TopMangas = ({ history }) => {
 
   const _loadingEl = () => {
     if (!nextPage) return null;
-    return <div className = "loadMoreWrapper">Loading...</div>;
+    return (
+      <div className = "loadMoreWrapper">
+        <Spin size = "large" />
+      </div>
+    );
   };
 
   const _waypointEl = () => {
@@ -115,7 +119,7 @@ const TopMangas = ({ history }) => {
         )}
       />
       {_waypointEl()}
-      {/* {_loadingEl()} */}
+      {_loadingEl()}
     </div>
   );
 };
