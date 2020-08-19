@@ -25,7 +25,9 @@ SECRET_KEY = "y&a4qh@9sownkzfk-%sc&+7wh6egewdyp-r2hvj-g*cue3q20%"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["manganet.s3-website-us-east-1.amazonaws.com"]
+ALLOWED_HOSTS = [
+    "manganet-env.eba-dfseqpim.us-east-1.elasticbeanstalk.com",
+]
 
 
 # Application definition
@@ -57,9 +59,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_WHITELIST = ["http://manganet.s3-website-us-east-1.amazonaws.com"]
+CORS_ORIGIN_WHITELIST = [
+    "http://manganet.s3-website-us-east-1.amazonaws.com",
+]
 
-CSRF_TRUSTED_ORIGINS = ["http://manganet.s3-website-us-east-1.amazonaws.com"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://manganet.s3-website-us-east-1.amazonaws.com",
+]
 
 CORS_ALLOW_METHODS = [
     "GET",
