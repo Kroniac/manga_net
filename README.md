@@ -13,7 +13,7 @@ Backend: Django, Postgres. Deployed on AWS EBS and RDS.
   - Automatically move to next change
   - Support to add the app to your home screen
   - Search for any chapter of a manga by chapter number name or description
-  - Highly responive
+  - Highly responsive
 
 ![Home](./readme_images/home.png)
 ![Home](./readme_images/detail.png)
