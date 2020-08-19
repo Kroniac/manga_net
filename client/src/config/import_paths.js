@@ -32,4 +32,5 @@ export const Components = {
   Buttons: () => require('../components/buttons/index.js'),
   Snackbar: () => require('../components/snackbar/snackbar.jsx'),
   ErrorView: () => require('../components/error_view/error_view.jsx'),
+  SearchBar: () => require('../components/search_bar/search_bar.jsx'),
 };

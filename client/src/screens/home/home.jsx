@@ -8,7 +8,6 @@ import './home.less';
 
 import { MangaDetails } from './manga_details';
 import { ReturnMangaStatusInfo } from './utils';
-import Search from '../../antd/search';
 
 import HomeImage from '../../images/ret.png';
 import { Components, CustomHooks, Libs, Urls } from '#config/import_paths';
@@ -17,6 +16,7 @@ const { SanitiazeTitle } = Libs.Utils();
 
 const { FavouriteButton } = Components.Buttons();
 const { Snackbar } = Components.Snackbar();
+const { SearchBar } = Components.SearchBar();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 const { useFavouritedManga } = CustomHooks.UseFavourtiedManga();
@@ -98,7 +98,7 @@ const Home = ({ match, history }) => {
           className = {match?.params?.mangaId
             ? ['mainSearchContainer', 'selected'].join(' ') : 'mainSearchContainer'}
         >
-          <Search
+          <SearchBar
             frameStyles = {{ maxWidth: 500, zIndex: 1, width: '75%', backgroundColor: '#383838' }}
             inputStyles = {{ paddingTop: 10, paddingBottom: 10 }}
             onChange = {_onChangeText}
