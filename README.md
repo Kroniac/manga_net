@@ -1,8 +1,8 @@
 # Manga Net
 
 Manga Net is a PWA app to read all your favourite mangas.
-Frontend: React JS. Deployed on AWS S3.
-Backend: Django, Postgres. Deployed on AWS EBS and RDS.
+ - Frontend: React JS. Deployed on AWS S3.
+ - Backend: Django, Postgres. Deployed on AWS Elastic BeanStalk and RDS.
 
 # Features
 
