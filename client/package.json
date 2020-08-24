@@ -7,7 +7,8 @@
   "scripts": {
     "start": "parcel --port=3001 src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build src/index.html --out-dir public --no-source-maps"
+    "build": "parcel build src/index.html --out-dir build --no-source-maps",
+    "deploy": "aws s3 sync build/ s3://manganet"
   },
   "keywords": [],
   "author": "",
@@ -23,10 +24,12 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
-    "less": "^3.11.1",
-    "parcel-bundler": "^1.12.4"
+    "less": "^3.12.2",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.10"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.2",
     "antd": "^4.1.1",
     "axios": "^0.19.2",
     "locutus": "^2.0.11",
@@ -34,13 +37,13 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
-    "react-autocomplete": "^1.8.1",
     "react-dom": "^16.13.1",
     "react-headroom": "^3.0.0",
     "react-lottie": "^1.2.3",
     "react-masonry-layout": "^0.4.0",
     "react-router-dom": "^5.1.2",
-    "react-waypoint": "^9.0.3"
+    "react-waypoint": "^9.0.3",
+    "src": "^1.1.2"
   },
   "alias": {
     "#config": "./src/config"
