@@ -26,8 +26,7 @@ let isDropdownVisible = false;
 const MangaChapter = ({ match, history }) => {
   const { saveMangaReadPos } = useSavedMangaReadPos();
   const [{ data, isLoading, apiError }, doFetch, retryFetch] = useDataApi(
-    ApiUrls.baseUrl
-    + ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`),
+    ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`),
     null,
     false,
   );
@@ -35,8 +34,9 @@ const MangaChapter = ({ match, history }) => {
 
   useEffect(() => {
     window.addEventListener('scroll', _onScroll);
-    doFetch(ApiUrls.baseUrl
-      + ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`));
+    doFetch(
+      ApiUrls.mangaChapter.replace('{chapterId}', `${match.params.mangaId}-${match.params.chapterId}`),
+    );
     return () => {
       window.addEventListener('scroll', _onScroll);
     };

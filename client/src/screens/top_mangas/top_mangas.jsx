@@ -41,7 +41,7 @@ const TopMangas = ({ history }) => {
       page_size: PAGE_SIZE,
     };
 
-    const url = `${ApiUrls.baseUrl + ApiUrls.mangas}?${QueryString.stringify(params)}`;
+    const url = `${ApiUrls.mangas}?${QueryString.stringify(params)}`;
     Axios(url)
       .then((res) => {
         setNextPage(res.data.next ? page + 1 : null);

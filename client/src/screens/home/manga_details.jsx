@@ -38,7 +38,7 @@ export const MangaDetails = React.memo(({
 }) => {
   const [chapters, setChapters] = useState([]);
   const [{ data, isLoading, apiError }, doFetch, retryFetch] = useDataApi(
-    `${ApiUrls.baseUrl}${ApiUrls.mangaInfo}${mangaId}/`,
+    `${ApiUrls.mangaInfo}${mangaId}/`,
     null,
     false,
   );
@@ -57,7 +57,7 @@ export const MangaDetails = React.memo(({
   }, [data]);
 
   useEffect(() => {
-    doFetch(`${ApiUrls.baseUrl}${ApiUrls.mangaInfo}${mangaId}/`);
+    doFetch(`${ApiUrls.mangaInfo}${mangaId}/`);
   }, [mangaId]);
 
   const _getModifiedChapterTitle = (chapterTitle, chapterId) => {

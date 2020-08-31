@@ -33,7 +33,7 @@ const Home = ({ match, history }) => {
   const { isMangaFavourited, favouriteManga, unfavouriteManga } = useFavouritedManga();
   const { savedMangaReadPositions, getMangaPosIfSaved } = useSavedMangaReadPos();
   const [{ data, isLoading, apiError }, doFetch] = useDataApi(
-    `${ApiUrls.baseUrl}${ApiUrls.mangas}`,
+    ApiUrls.mangas,
     { results: [] },
     true,
     3000,
@@ -41,7 +41,7 @@ const Home = ({ match, history }) => {
 
   useEffect(() => {
     if (searchQuery.length > 2) {
-      doFetch(`${ApiUrls.baseUrl}${ApiUrls.mangas}?page_size=10&title__icontains=${searchQuery}`);
+      doFetch(`${ApiUrls.mangas}?page_size=10&title__icontains=${searchQuery}`);
     }
   }, [searchQuery]);
 
@@ -61,7 +61,7 @@ const Home = ({ match, history }) => {
     else favouriteManga(manga);
   };
 
-  const dataSource = searchQuery.length > 1 && data.results.map((manga) => ({
+  const dataSource = searchQuery.length > 1 && (data?.results || []).map((manga) => ({
     value: manga.title,
     key: manga.id,
     data: manga,

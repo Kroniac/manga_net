@@ -40,7 +40,7 @@ export const LazyLoadImage = ({ src, ...props }) => {
 
   const _fetchImage = async (imageLink) => {
     const reqConfig = {
-      url: ApiUrls.baseUrl + ApiUrls.mangaChapterImage,
+      url: ApiUrls.mangaChapterImage,
       data: {
         link: imageLink,
       },
