@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import { shape } from 'prop-types';
 import { string } from 'locutus/python';
 
+import Typography from 'antd/es/typography';
 import { Screens } from '#config/import_paths';
 
 const Home = Screens.Home();
@@ -17,6 +18,7 @@ const chapteraPathPattern = /^\/chapter\/[a-z0-9]{4,15}-[a-z.0-9]{1,7}-[a-z0-9-]
 const App = ({ location }) => {
   useEffect(() => {
     ReactGA.initialize('UA-176710683-1');
+    ReactGA.pageview(location.pathname + location.search);
   }, []);
 
   return (
@@ -55,15 +57,36 @@ App.propTypes = {
 
 const NavBar = () => (
   <div className = "navBarWrapper">
-    <NavLink tabIndex = {-1} activeClassName = "navBarItemActive" exact to = "/" className = "navBarItem">
-      Home
-    </NavLink>
-    <NavLink tabIndex = {-1} activeClassName = "navBarItemActive" to = "/topmangas" className = "navBarItem">
-      Top Mangas
-    </NavLink>
-    <NavLink tabIndex = {-1} activeClassName = "navBarItemActive" to = "/favourites" className = "navBarItem">
-      Favourites
-    </NavLink>
+    <div>
+      <Typography.Text>v0.6</Typography.Text>
+    </div>
+    <div>
+      <NavLink
+        tabIndex = {-1}
+        activeClassName = "navBarItemActive"
+        exact
+        to = "/"
+        className = "navBarItem"
+      >
+        Home
+      </NavLink>
+      <NavLink
+        tabIndex = {-1}
+        activeClassName = "navBarItemActive"
+        to = "/topmangas"
+        className = "navBarItem"
+      >
+        Top Mangas
+      </NavLink>
+      <NavLink
+        tabIndex = {-1}
+        activeClassName = "navBarItemActive"
+        to = "/favourites"
+        className = "navBarItem"
+      >
+        Favourites
+      </NavLink>
+    </div>
   </div>
 );
 
