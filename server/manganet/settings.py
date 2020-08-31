@@ -26,6 +26,7 @@ SECRET_KEY = "y&a4qh@9sownkzfk-%sc&+7wh6egewdyp-r2hvj-g*cue3q20%"
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "api.manganet.club",
     "manganet-env.eba-dfseqpim.us-east-1.elasticbeanstalk.com",
 ]
 
@@ -60,11 +61,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    "http://manganet.s3-website-us-east-1.amazonaws.com",
+    "https://www.manganet.club",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://manganet.s3-website-us-east-1.amazonaws.com",
+    "https://www.manganet.club",
 ]
 
 CORS_ALLOW_METHODS = [
