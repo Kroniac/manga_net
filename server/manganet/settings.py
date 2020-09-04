@@ -60,13 +60,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "https://www.manganet.club",
-]
+CORS_ORIGIN_WHITELIST = ["https://www.manganet.club", "https://manganet.club"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://www.manganet.club",
-]
+CSRF_TRUSTED_ORIGINS = ["https://www.manganet.club", "https://manganet.club"]
 
 CORS_ALLOW_METHODS = [
     "GET",
