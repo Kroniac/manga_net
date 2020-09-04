@@ -8,7 +8,7 @@
     "start": "parcel --port=3001 src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build src/index.html --out-dir build --no-source-maps",
-    "deploy": "aws s3 sync build/ s3://manganet"
+    "deploy": "aws s3 sync build/ s3://manganet.club"
   },
   "keywords": [],
   "author": "",

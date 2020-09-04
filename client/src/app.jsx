@@ -6,7 +6,10 @@ import { string } from 'locutus/python';
 
 import Typography from 'antd/es/typography';
 import Axios from 'axios';
+
 import { Screens } from '#config/import_paths';
+
+Axios.defaults.baseURL = process.env.API_BASE_URL;
 
 const Home = Screens.Home();
 const MangaChapter = Screens.MangaChapter();
@@ -18,7 +21,6 @@ const chapteraPathPattern = /^\/chapter\/[a-z0-9]{4,15}-[a-z.0-9]{1,7}-[a-z0-9-]
 
 const App = ({ location }) => {
   useEffect(() => {
-    Axios.defaults.baseURL = process.env.API_BASE_URL;
     ReactGA.initialize('UA-176710683-1');
     ReactGA.pageview(location.pathname + location.search);
   }, []);
