@@ -52,7 +52,7 @@ const Home = ({ match, history }) => {
     }
   }, [apiError]);
 
-  const _onChangeText = useCallback(_.throttle((searchText) => {
+  const _onChangeText = useCallback(_.debounce((searchText) => {
     setSearchQuery(searchText);
   }, THROTTLE_TIME), [setSearchQuery]);
 
