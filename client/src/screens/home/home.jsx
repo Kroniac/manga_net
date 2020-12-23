@@ -25,7 +25,7 @@ const { useSnackbar } = CustomHooks.UseSnackbar();
 
 const { ApiUrls } = Urls.ApiUrls();
 
-const THROTTLE_TIME = 500;
+const DEBOUNCE_TIME = 300;
 
 const Home = ({ match, history }) => {
   const { isActive, message, openSnackBar } = useSnackbar();
@@ -54,7 +54,7 @@ const Home = ({ match, history }) => {
 
   const _onChangeText = useCallback(_.debounce((searchText) => {
     setSearchQuery(searchText);
-  }, THROTTLE_TIME), [setSearchQuery]);
+  }, DEBOUNCE_TIME), [setSearchQuery]);
 
   const _onFavouriteButtonClick = (manga) => {
     if (isMangaFavourited(manga.id)) unfavouriteManga(manga.id);
