@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Axios from 'axios';
-import { string } from 'prop-types';
+import { number, objectOf, oneOfType, string } from 'prop-types';
 import { Urls } from '#config/import_paths';
 
 const { ApiUrls } = Urls.ApiUrls();
 
-export const LazyLoadImage = ({ src, ...props }) => {
+export const LazyLoadImage = ({ src, placeholderStyles, ...props }) => {
   const [imageBinary, setImageBinary] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const placeholderRef = useRef();
@@ -13,6 +13,7 @@ export const LazyLoadImage = ({ src, ...props }) => {
   const cancelToken = useRef(null);
 
   useEffect(() => {
+    _fetchImage(src);
     cancelToken.current = Axios.CancelToken.source();
     const options = {
       root: null,
@@ -60,7 +61,7 @@ export const LazyLoadImage = ({ src, ...props }) => {
     <div
       ref = {placeholderRef}
       className = "imagePlaceHolder"
-      style = {{ height: 500, paddingTop: 20 }}
+      style = {{ height: 500, paddingTop: 20, ...placeholderStyles }}
     >
       <div style = {{ color: 'white', fontWeight: 'bold' }}>Loading...</div>
     </div>
@@ -79,4 +80,9 @@ export const LazyLoadImage = ({ src, ...props }) => {
 
 LazyLoadImage.propTypes = {
   src: string.isRequired,
+  placeholderStyles: objectOf(oneOfType([string, number])),
+};
+
+LazyLoadImage.defaultProps = {
+  placeholderStyles: {},
 };

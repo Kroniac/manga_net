@@ -6,6 +6,12 @@ import './manga_card.less';
 import { Components } from '#config/import_paths';
 
 const { FavouriteButton } = Components.Buttons();
+const { LazyLoadImage } = Components.LazyLoadImage();
+
+const GetImageUrl = (link) => {
+  const linkSplitted = link.split('.com/');
+  return `https://avt.mkklcdnv6temp.com/${linkSplitted[1]}`;
+};
 
 const MangaCard = ({ manga, isMangaFavourite, onFavouriteClick, className, onShowDetails }) => (
   <figure className = {['mangaCardWrapper', className].join(' ')}>
@@ -15,11 +21,10 @@ const MangaCard = ({ manga, isMangaFavourite, onFavouriteClick, className, onSho
           Show Details
         </Typography.Title>
       </div>
-      <img
+      <LazyLoadImage
+        src = {GetImageUrl(manga.image)}
         style = {{ width: 170, height: (manga.image_height / manga.image_width) * 170 }}
-        alt = "example"
-        referrerPolicy = "no-referrer"
-        src = {manga.image}
+        placeholderStyles = {{ width: 170, height: (manga.image_height / manga.image_width) * 170 }}
       />
     </div>
     <div className = "favouriteMangasTitleWrapper">

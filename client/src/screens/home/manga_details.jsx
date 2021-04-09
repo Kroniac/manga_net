@@ -18,6 +18,7 @@ const { SanitiazeTitle, ReturnFormattedDateFromUtcSecs } = Libs.Utils();
 
 const { FavouriteButton } = Components.Buttons();
 const { ErrorView } = Components.ErrorView();
+const { LazyLoadImage } = Components.LazyLoadImage();
 
 const { useDataApi } = CustomHooks.UseDataApi();
 
@@ -119,11 +120,7 @@ export const MangaDetails = React.memo(({
         <>
           <div className = "mangaDetailsCardWrapper">
             <div className = "mangaDetailsCoverWrapper" style = {{}}>
-              <img
-                referrerPolicy = "no-referrer"
-                alt = {data.alt}
-                src = {data.image}
-              />
+              <LazyLoadImage src = {data.image} />
             </div>
             <div className = "mangaDetailsCardContentWrapper">
               <div className = "mangaDetailsCardContentTagWrapper">
