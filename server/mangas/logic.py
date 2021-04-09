@@ -226,7 +226,7 @@ def compress_image(image):
 
 
 def get_manga_chapter_image(link):
-    headers = {"referer": "https://manganelo.com/chapter/black_clover/chapter_254"}
+    headers = {"referer": "https://manganelo.com/"}
     r = requests.get(link, stream=True, headers=headers,)
     if r.status_code == 200:
         new_image = Image.open(io.BytesIO(r.content))
