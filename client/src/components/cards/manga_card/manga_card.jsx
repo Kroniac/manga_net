@@ -21,10 +21,11 @@ const MangaCard = ({ manga, isMangaFavourite, onFavouriteClick, className, onSho
           Show Details
         </Typography.Title>
       </div>
-      <LazyLoadImage
+      <img
         src = {GetImageUrl(manga.image)}
         style = {{ width: 170, height: (manga.image_height / manga.image_width) * 170 }}
-        placeholderStyles = {{ width: 170, height: (manga.image_height / manga.image_width) * 170 }}
+        alt = "example"
+        referrerPolicy = "no-referrer"
       />
     </div>
     <div className = "favouriteMangasTitleWrapper">
